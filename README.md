@@ -1,6 +1,12 @@
-# Debian Smart Changelog
+# 🚀 Debian Smart Changelog
 
-一个智能的VSCode插件，专为Debian包开发者设计，能够自动生成高质量的changelog条目。
+[![Build Status](https://github.com/yixinshark/auto-create-Debian-Chanagelog/workflows/Build%20and%20Test/badge.svg)](https://github.com/yixinshark/auto-create-Debian-Chanagelog/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![VSCode Marketplace](https://img.shields.io/badge/vscode-marketplace-blue.svg)](https://marketplace.visualstudio.com/items?itemName=debian-smart-changelog)
+
+一个智能的VSCode插件，专为Debian包开发者设计，能够自动生成高质量的changelog条目。告别手动编写changelog的时代！
+
+![功能演示](https://via.placeholder.com/800x400/0066cc/ffffff?text=Debian+Smart+Changelog+Demo)
 
 ## ✨ 主要功能
 
@@ -156,6 +162,36 @@ Ctrl+Alt+G  # 从Git生成智能changelog
 
 MIT License
 
+## 🤝 贡献指南
+
+我们欢迎所有形式的贡献！
+
+### 如何贡献
+1. Fork 这个仓库
+2. 创建您的功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开一个 Pull Request
+
+### 开发环境设置
+```bash
+# 克隆仓库
+git clone https://github.com/yixinshark/auto-create-Debian-Chanagelog.git
+cd auto-create-Debian-Chanagelog
+
+# 安装依赖
+npm install
+
+# 编译项目
+npm run compile
+
+# 在VSCode中调试
+# 按F5启动调试模式
+```
+
+### 报告问题
+如果您发现了bug或有功能建议，请[创建一个issue](https://github.com/yixinshark/auto-create-Debian-Chanagelog/issues)。
+
 ## 🙋‍♂️ 支持
 
 如果您遇到问题或有建议，请：
@@ -163,6 +199,24 @@ MIT License
 2. 在GitHub提交Issue
 3. 参与讨论和改进
 
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+
+## 🙏 致谢
+
+- 感谢所有为Debian生态系统做出贡献的开发者
+- 感谢VSCode扩展开发社区的支持
+- 感谢所有测试用户的反馈
+
+## 📊 统计
+
+![GitHub stars](https://img.shields.io/github/stars/yixinshark/auto-create-Debian-Chanagelog?style=social)
+![GitHub forks](https://img.shields.io/github/forks/yixinshark/auto-create-Debian-Chanagelog?style=social)
+![GitHub issues](https://img.shields.io/github/issues/yixinshark/auto-create-Debian-Chanagelog)
+
 ---
 
-**让Debian包的changelog管理变得简单高效！** 🎉
+🎉 **让Debian包的changelog管理变得简单高效！** 🎉
+
+**⭐ 如果这个项目对您有帮助，请给我们一个Star！**

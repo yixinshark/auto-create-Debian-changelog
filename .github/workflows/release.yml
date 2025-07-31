@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Compile TypeScript
+      run: npm run compile
+    
+    - name: Package extension
+      run: npx @vscode/vsce package
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          ## 🚀 新版本发布
+          
+          ### ✨ 功能特性
+          - 智能Debian changelog生成
+          - Git提交历史集成
+          - Issue跟踪系统支持
+          
+          ### 📦 安装方法
+          1. 下载 `.vsix` 文件
+          2. 在VSCode中运行: `code --install-extension debian-smart-changelog-*.vsix`
+          
+          ### 📚 使用文档
+          详见项目README和使用指南。
+        draft: false
+        prerelease: false
+    
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./debian-smart-changelog-*.vsix
+        asset_name: debian-smart-changelog.vsix
+        asset_content_type: application/zip
