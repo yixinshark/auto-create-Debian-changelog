@@ -258,46 +258,70 @@ export class ChangelogGenerator {
     private async getPackageName(): Promise<string> {
         const workspaceFolders = vscode.workspace.workspaceFolders;
         let suggestedName = 'my-package';
-        let controlPackageName: string | null = null;
         
         if (workspaceFolders && workspaceFolders.length > 0) {
-            // 尝试从debian/control文件读取
-            const controlPath = vscode.Uri.joinPath(workspaceFolders[0].uri, 'debian', 'control');
-            try {
-                const controlContent = await vscode.workspace.fs.readFile(controlPath);
-                const content = Buffer.from(controlContent).toString('utf8');
-                const match = content.match(/^Package:\s*(.+)$/m);
-                if (match) {
-                    controlPackageName = match[1].trim();
+            const workspaceRoot = workspaceFolders[0].uri;
+            
+            // 1. 首先尝试从 debian/changelog 读取已有包名 (最优先)
+            const changelogPackageName = await this.getPackageNameFromChangelog(workspaceRoot);
+            if (changelogPackageName) {
+                const useChangelogName = await vscode.window.showQuickPick(
+                    [
+                        { label: changelogPackageName, description: '(从 debian/changelog 读取)', picked: true },
+                        { label: '选择其他包名', description: '从其他来源选择' }
+                    ],
+                    {
+                        placeHolder: '发现已有changelog包名',
+                        title: `检测到包名: ${changelogPackageName}`
+                    }
+                );
+                
+                if (useChangelogName?.label === changelogPackageName) {
+                    return changelogPackageName;
                 }
-            } catch (error) {
-                // 文件不存在或读取失败
             }
             
-            // 如果没有找到control文件中的包名，使用文件夹名作为建议
-            if (!controlPackageName) {
-                const folderName = vscode.workspace.name || workspaceFolders[0].name;
-                if (folderName) {
-                    suggestedName = folderName;
-                }
-            }
-        }
-        
-        // 如果找到了control文件中的包名，询问是否使用
-        if (controlPackageName) {
-            const useControlName = await vscode.window.showQuickPick(
-                [
-                    { label: controlPackageName, description: '(从 debian/control 读取)', picked: true },
-                    { label: '手动输入', description: '输入其他包名' }
-                ],
-                {
-                    placeHolder: '选择包名来源',
-                    title: `发现包名: ${controlPackageName}`
-                }
-            );
+            // 2. 从 debian/control 读取所有包名
+            const controlPackageNames = await this.getPackageNamesFromControl(workspaceRoot);
             
-            if (useControlName?.label === controlPackageName) {
-                return controlPackageName;
+            // 3. 获取文件夹名作为建议
+            const folderName = vscode.workspace.name || workspaceFolders[0].name;
+            if (folderName) {
+                suggestedName = folderName;
+            }
+            
+            // 如果找到了control文件中的包名，提供选择
+            if (controlPackageNames.length > 0) {
+                const options = [
+                    ...controlPackageNames.map(name => ({
+                        label: name,
+                        description: '(从 debian/control 读取)'
+                    })),
+                    {
+                        label: suggestedName,
+                        description: '(文件夹名建议)'
+                    },
+                    {
+                        label: '手动输入',
+                        description: '输入自定义包名'
+                    }
+                ];
+                
+                const selectedOption = await vscode.window.showQuickPick(options, {
+                    placeHolder: '选择包名',
+                    title: controlPackageNames.length > 1 
+                        ? `发现 ${controlPackageNames.length} 个包` 
+                        : '选择包名来源'
+                });
+                
+                if (selectedOption && selectedOption.label !== '手动输入') {
+                    return selectedOption.label;
+                }
+                
+                // 如果选择了手动输入，使用建议名称作为默认值
+                if (selectedOption?.label === '手动输入') {
+                    suggestedName = controlPackageNames[0] || suggestedName;
+                }
             }
         }
         
@@ -309,6 +333,48 @@ export class ChangelogGenerator {
         });
         
         return packageName || 'unknown-package';
+    }
+
+    /**
+     * 从 debian/changelog 读取包名
+     */
+    private async getPackageNameFromChangelog(workspaceRoot: vscode.Uri): Promise<string | null> {
+        const changelogPath = vscode.Uri.joinPath(workspaceRoot, 'debian', 'changelog');
+        try {
+            const changelogContent = await vscode.workspace.fs.readFile(changelogPath);
+            const content = Buffer.from(changelogContent).toString('utf8');
+            
+            // 解析changelog格式: package-name (version) distribution; urgency=level
+            const match = content.match(/^([^\s\(]+)\s+\([^)]+\)/m);
+            if (match) {
+                return match[1].trim();
+            }
+        } catch (error) {
+            // 文件不存在或读取失败
+        }
+        return null;
+    }
+
+    /**
+     * 从 debian/control 读取所有包名
+     */
+    private async getPackageNamesFromControl(workspaceRoot: vscode.Uri): Promise<string[]> {
+        const controlPath = vscode.Uri.joinPath(workspaceRoot, 'debian', 'control');
+        try {
+            const controlContent = await vscode.workspace.fs.readFile(controlPath);
+            const content = Buffer.from(controlContent).toString('utf8');
+            
+            // 查找所有 Package: 行
+            const packageMatches = content.match(/^Package:\s*(.+)$/gm);
+            if (packageMatches) {
+                return packageMatches
+                    .map(match => match.replace(/^Package:\s*/, '').trim())
+                    .filter(name => name.length > 0);
+            }
+        } catch (error) {
+            // 文件不存在或读取失败
+        }
+        return [];
     }
 
     /**

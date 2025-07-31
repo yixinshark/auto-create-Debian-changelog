@@ -24,3 +24,21 @@ Description: Desktop Environment Shell for Deepin
  .
  This package contains the main shell application and
  core components.
+
+Package: libdde-shell1
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: DDE Shell library
+ Shared library for DDE Shell components.
+ This package contains the runtime library.
+
+Package: libdde-shell-dev
+Architecture: any
+Depends:
+ libdde-shell1 (= ${binary:Version}),
+ ${misc:Depends},
+Description: DDE Shell development files
+ Development files for the DDE Shell library.
+ This package contains headers and development libraries.

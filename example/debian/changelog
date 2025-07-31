@@ -1,24 +1,25 @@
-dde-shell (2.0.3) unstable; urgency=medium
+dde-shell (2.0.4-1) unstable; urgency=medium
 
-  * Fix desktop wallpaper not loading on startup
-  * Improve performance in multi-monitor setup
-  * Update Chinese translations
-  * Add support for custom panel height
+  * New upstream release 2.0.4
+  * Update Qt6 dependencies
+  * Fix desktop integration issues
+  * Improve performance and stability
 
- -- Deepin Packages Builder <packages@deepin.org>  Wed, 15 Jul 2025 14:32:18 +0800
+ -- Deepin Packages Builder <packages@deepin.org>  Mon, 29 Jul 2024 10:30:00 +0800
 
-dde-shell (2.0.2) unstable; urgency=high
+dde-shell (2.0.3-2) unstable; urgency=medium
 
-  * Security fix: prevent code injection in plugin loader
-  * Fix memory leak in notification system
-  * Improve stability of dock panel
+  * Fix build dependencies
+  * Update packaging for new Qt6 version
+  * Add missing translations
 
- -- Deepin Packages Builder <packages@deepin.org>  Mon, 01 Jul 2025 09:15:42 +0800
+ -- Deepin Packages Builder <packages@deepin.org>  Fri, 26 Jul 2024 16:20:00 +0800
 
-dde-shell (2.0.1) unstable; urgency=medium
+dde-shell (2.0.3-1) unstable; urgency=medium
 
-  * Initial release for Debian unstable
-  * Add basic desktop shell functionality
-  * Support for multiple panels and applets
+  * New upstream release 2.0.3
+  * Enhanced window management
+  * Bug fixes and performance improvements
+  * Updated documentation
 
- -- Deepin Packages Builder <packages@deepin.org>  Fri, 15 Jun 2025 16:20:30 +0800
+ -- Deepin Packages Builder <packages@deepin.org>  Wed, 24 Jul 2024 14:45:00 +0800
