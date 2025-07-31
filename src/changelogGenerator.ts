@@ -256,26 +256,56 @@ export class ChangelogGenerator {
      * 获取包名
      */
     private async getPackageName(): Promise<string> {
-        // 尝试从debian/control文件读取
         const workspaceFolders = vscode.workspace.workspaceFolders;
+        let suggestedName = 'my-package';
+        let controlPackageName: string | null = null;
+        
         if (workspaceFolders && workspaceFolders.length > 0) {
+            // 尝试从debian/control文件读取
             const controlPath = vscode.Uri.joinPath(workspaceFolders[0].uri, 'debian', 'control');
             try {
                 const controlContent = await vscode.workspace.fs.readFile(controlPath);
                 const content = Buffer.from(controlContent).toString('utf8');
                 const match = content.match(/^Package:\s*(.+)$/m);
                 if (match) {
-                    return match[1].trim();
+                    controlPackageName = match[1].trim();
                 }
             } catch (error) {
                 // 文件不存在或读取失败
+            }
+            
+            // 如果没有找到control文件中的包名，使用文件夹名作为建议
+            if (!controlPackageName) {
+                const folderName = vscode.workspace.name || workspaceFolders[0].name;
+                if (folderName) {
+                    suggestedName = folderName;
+                }
+            }
+        }
+        
+        // 如果找到了control文件中的包名，询问是否使用
+        if (controlPackageName) {
+            const useControlName = await vscode.window.showQuickPick(
+                [
+                    { label: controlPackageName, description: '(从 debian/control 读取)', picked: true },
+                    { label: '手动输入', description: '输入其他包名' }
+                ],
+                {
+                    placeHolder: '选择包名来源',
+                    title: `发现包名: ${controlPackageName}`
+                }
+            );
+            
+            if (useControlName?.label === controlPackageName) {
+                return controlPackageName;
             }
         }
         
         // 从用户输入获取
         const packageName = await vscode.window.showInputBox({
             prompt: '请输入包名',
-            placeHolder: 'my-package'
+            value: suggestedName,
+            placeHolder: suggestedName
         });
         
         return packageName || 'unknown-package';
