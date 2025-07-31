@@ -149,8 +149,8 @@ package-name (1.0.1) unstable; urgency=medium
 
 ### Support
 - 📖 Documentation: [README.md](README.md)
-- 🐛 Bug Reports: [GitHub Issues](https://github.com/yixinshark/auto-create-Debian-Chanagelog/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/yixinshark/auto-create-Debian-Chanagelog/discussions)
+- 🐛 Bug Reports: [GitHub Issues](https://github.com/yixinshark/auto-create-Debian-changelog/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/yixinshark/auto-create-Debian-changelog/discussions)
 
 ## 🔮 Future Roadmap
 
@@ -209,7 +209,7 @@ Special thanks to:
 ## 📥 Download Links
 
 ### Primary Download
-- **VSIX Package**: [smart-debian-changelog-1.0.0.vsix](https://github.com/yixinshark/auto-create-Debian-Chanagelog/releases/download/v1.0.0/smart-debian-changelog-1.0.0.vsix)
+- **VSIX Package**: [smart-debian-changelog-1.0.0.vsix](https://github.com/yixinshark/auto-create-Debian-changelog/releases/download/v1.0.0/smart-debian-changelog-1.0.0.vsix)
 
 ### Checksums
 ```

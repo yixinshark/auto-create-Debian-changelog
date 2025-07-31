@@ -3,7 +3,7 @@
 ## 📦 项目基本信息
 
 **项目名称**: Debian Smart Changelog  
-**GitHub仓库**: https://github.com/yixinshark/auto-create-Debian-Chanagelog  
+**GitHub仓库**: https://github.com/yixinshark/auto-create-Debian-changelog  
 **插件版本**: v1.0.0  
 **开发状态**: ✅ 完成并准备发布
 

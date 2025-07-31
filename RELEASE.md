@@ -5,7 +5,7 @@
 **Debian Smart Changelog** 是一个智能的VSCode插件，专为Debian包开发者设计，能够自动生成高质量的changelog条目。
 
 ### 🔗 项目信息
-- **GitHub仓库**: https://github.com/yixinshark/auto-create-Debian-Chanagelog
+- **GitHub仓库**: https://github.com/yixinshark/auto-create-Debian-changelog
 - **插件名称**: `debian-smart-changelog`
 - **版本**: 1.0.0
 - **许可证**: MIT
@@ -208,4 +208,4 @@ npx @vscode/vsce publish
 
 🎊 **恭喜！Debian Smart Changelog已准备好与全世界的Debian开发者见面！**
 
-开源地址：https://github.com/yixinshark/auto-create-Debian-Chanagelog
+开源地址：https://github.com/yixinshark/auto-create-Debian-changelog

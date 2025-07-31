@@ -7,13 +7,13 @@
 ### 1. 访问GitHub仓库
 打开浏览器访问：
 ```
-https://github.com/yixinshark/auto-create-Debian-Chanagelog
+https://github.com/yixinshark/auto-create-Debian-changelog
 ```
 
 ### 2. 创建新Release
 1. 点击右侧的 "Releases" 或者访问：
    ```
-   https://github.com/yixinshark/auto-create-Debian-Chanagelog/releases
+   https://github.com/yixinshark/auto-create-Debian-changelog/releases
    ```
 
 2. 点击 "Create a new release" 按钮
@@ -139,9 +139,9 @@ package-name (1.0.0) unstable; urgency=medium
 
 ### 🐛 问题反馈
 遇到问题？欢迎反馈：
-- 🐛 [报告Bug](https://github.com/yixinshark/auto-create-Debian-Chanagelog/issues)
-- 💡 [功能建议](https://github.com/yixinshark/auto-create-Debian-Chanagelog/issues)
-- 💬 [讨论交流](https://github.com/yixinshark/auto-create-Debian-Chanagelog/discussions)
+- 🐛 [报告Bug](https://github.com/yixinshark/auto-create-Debian-changelog/issues)
+- 💡 [功能建议](https://github.com/yixinshark/auto-create-Debian-changelog/issues)
+- 💬 [讨论交流](https://github.com/yixinshark/auto-create-Debian-changelog/discussions)
 
 ### 🙏 致谢
 感谢所有为Debian生态系统和开源社区做出贡献的开发者！
@@ -199,9 +199,9 @@ npx @vscode/vsce publish
 ## 🔗 重要链接
 
 发布后可以分享这些链接：
-- **项目主页**: https://github.com/yixinshark/auto-create-Debian-Chanagelog
-- **Release页面**: https://github.com/yixinshark/auto-create-Debian-Chanagelog/releases
-- **下载链接**: https://github.com/yixinshark/auto-create-Debian-Chanagelog/releases/download/v1.0.0/smart-debian-changelog-1.0.0.vsix
+- **项目主页**: https://github.com/yixinshark/auto-create-Debian-changelog
+- **Release页面**: https://github.com/yixinshark/auto-create-Debian-changelog/releases
+- **下载链接**: https://github.com/yixinshark/auto-create-Debian-changelog/releases/download/v1.0.0/smart-debian-changelog-1.0.0.vsix
 
 ---
 

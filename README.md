@@ -1,6 +1,6 @@
 # 🚀 Smart Debian Changelog
 
-[![Build Status](https://github.com/yixinshark/auto-create-Debian-Chanagelog/workflows/Build%20and%20Test/badge.svg)](https://github.com/yixinshark/auto-create-Debian-Chanagelog/actions)
+[![Build Status](https://github.com/yixinshark/auto-create-Debian-changelog/workflows/Build%20and%20Test/badge.svg)](https://github.com/yixinshark/auto-create-Debian-changelog/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![VSCode Marketplace](https://img.shields.io/badge/vscode-marketplace-blue.svg)](https://marketplace.visualstudio.com/items?itemName=yixinshark.smart-debian-changelog)
 
@@ -42,7 +42,7 @@ A powerful VSCode extension designed for Debian package developers to intelligen
 4. Restart VSCode
 
 #### Manual Installation
-1. Download the latest `.vsix` file from [Releases](https://github.com/yixinshark/auto-create-Debian-Chanagelog/releases)
+1. Download the latest `.vsix` file from [Releases](https://github.com/yixinshark/auto-create-Debian-changelog/releases)
 2. Open VSCode
 3. Press `Ctrl+Shift+P` and run `Extensions: Install from VSIX...`
 4. Select the downloaded file
@@ -150,7 +150,7 @@ Configure API tokens to enable automatic Issue details retrieval:
 4. 重启VSCode
 
 #### 手动安装
-1. 从[发布页面](https://github.com/yixinshark/auto-create-Debian-Chanagelog/releases)下载最新的`.vsix`文件
+1. 从[发布页面](https://github.com/yixinshark/auto-create-Debian-changelog/releases)下载最新的`.vsix`文件
 2. 打开VSCode
 3. 按 `Ctrl+Shift+P` 运行 `Extensions: Install from VSIX...`
 4. 选择下载的文件
@@ -228,8 +228,8 @@ We welcome all forms of contributions! | 我们欢迎所有形式的贡献！
 ### Development Setup | 开发环境设置
 ```bash
 # Clone the repository | 克隆仓库
-git clone https://github.com/yixinshark/auto-create-Debian-Chanagelog.git
-cd auto-create-Debian-Chanagelog
+git clone https://github.com/yixinshark/auto-create-Debian-changelog.git
+cd auto-create-Debian-changelog
 
 # Install dependencies | 安装依赖
 npm install
@@ -242,9 +242,9 @@ npm run compile
 ```
 
 ### Report Issues | 报告问题
-If you find a bug or have a feature request, please [create an issue](https://github.com/yixinshark/auto-create-Debian-Chanagelog/issues).
+If you find a bug or have a feature request, please [create an issue](https://github.com/yixinshark/auto-create-Debian-changelog/issues).
 
-如果您发现了bug或有功能建议，请[创建一个issue](https://github.com/yixinshark/auto-create-Debian-Chanagelog/issues)。
+如果您发现了bug或有功能建议，请[创建一个issue](https://github.com/yixinshark/auto-create-Debian-changelog/issues)。
 
 ## 📄 License | 许可证
 
@@ -260,9 +260,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📊 Statistics | 统计
 
-![GitHub stars](https://img.shields.io/github/stars/yixinshark/auto-create-Debian-Chanagelog?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yixinshark/auto-create-Debian-Chanagelog?style=social)
-![GitHub issues](https://img.shields.io/github/issues/yixinshark/auto-create-Debian-Chanagelog)
+![GitHub stars](https://img.shields.io/github/stars/yixinshark/auto-create-Debian-changelog?style=social)
+![GitHub forks](https://img.shields.io/github/forks/yixinshark/auto-create-Debian-changelog?style=social)
+![GitHub issues](https://img.shields.io/github/issues/yixinshark/auto-create-Debian-changelog)
 
 ---
 
