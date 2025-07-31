@@ -1071,7 +1071,1595 @@ _**Assistant**_
 3. 如果需要的话，打包插件
 4. 提供测试方法
 
-首先让我检查一下项目的状态，然后</details></think>
+首先让我检查一下项目的状态，然后尝试编译。</details></think>
+
+---
+
+让我来编译和打包插件，然后测试一下功能！
+
+---
+
+```bash
+npm run compile
+```
+
+```
+Type help for instructions on how to use fish
+zyz@zyz-PC ~/w/w/a/aichangelog> npm run compile
+
+> debian-smart-changelog@1.0.0 compile
+> tsc -p ./
+
+sh: 1: tsc: not found
+zyz@zyz-PC ~/w/w/a/aichangelog [127]>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>看起来TypeScript编译器没有安装。我需要先安装依赖，然后再编译。</details></think>
+
+---
+
+```bash
+npm install
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog [127]> npm install
+
+added 32 packages, and audited 33 packages in 12s
+
+7 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+zyz@zyz-PC ~/w/w/a/aichangelog>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>好的，依赖安装成功了。现在可以尝试编译了。</details></think>
+
+---
+
+```bash
+npm run compile
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog> npm run compile
+
+> debian-smart-changelog@1.0.0 compile
+> tsc -p ./
+
+src/changelogGenerator.ts:110:25 - error TS2349: This expression is not callable.
+  Type 'typeof moment' has no call signatures.
+
+110         const dateStr = moment(entry.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ');
+                            ~~~~~~
+
+  src/changelogGenerator.ts:2:1
+    2 import * as moment from 'moment';
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Type originates at this import. A namespace-style import cannot be called or constructed, and will c
+ause a failure at runtime. Consider using a default import or import require here instead.
+
+src/changelogGenerator.ts:278:13 - error TS2345: Argument of type '{ prompt: string; placeholder: string
+; }' is not assignable to parameter of type 'InputBoxOptions'.
+  Object literal may only specify known properties, but 'placeholder' does not exist in type 'InputBoxOp
+tions'. Did you mean to write 'placeHolder'?
+
+278             placeholder: 'my-package'
+                ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/changelogGenerator.ts:301:21 - error TS2345: Argument of type '{ prompt: string; value: string; plac
+eholder: string; }' is not assignable to parameter of type 'InputBoxOptions'.
+  Object literal may only specify known properties, but 'placeholder' does not exist in type 'InputBoxOp
+tions'. Did you mean to write 'placeHolder'?
+
+301                     placeholder: '1.0.0'
+                        ~~~~~~~~~~~~~~~~~~~~
+
+src/changelogGenerator.ts:311:13 - error TS2345: Argument of type '{ prompt: string; placeholder: string
+; }' is not assignable to parameter of type 'InputBoxOptions'.
+  Object literal may only specify known properties, but 'placeholder' does not exist in type 'InputBoxOp
+tions'. Did you mean to write 'placeHolder'?
+
+311             placeholder: '1.0.0'
+                ~~~~~~~~~~~~~~~~~~~~
+
+
+Found 4 errors in the same file, starting at: src/changelogGenerator.ts:110
+
+zyz@zyz-PC ~/w/w/a/aichangelog [2]>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>有编译错误，我需要修复这些问题：
+
+1. moment导入问题
+2. VSCode API的placeholder应该是placeHolder（大小写问题）
+
+让我修复这些错误。</details></think>
+
+---
+
+<details><summary>Edit file: src/changelogGenerator.ts</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -1,4 +1,4 @@
+  import * as vscode from 'vscode';
+- import * as moment from 'moment';
++ import moment from 'moment';
+  
+  export interface ChangelogEntry {
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>我需要修复其他的编译错误，特别是placeholder应该是placeHolder。</details></think>
+
+---
+
+<details><summary>Edit file: src/changelogGenerator.ts</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -276,5 +276,5 @@
+          const packageName = await vscode.window.showInputBox({
+              prompt: '请输入包名',
+-             placeholder: 'my-package'
++             placeHolder: 'my-package'
+          });
+          
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>我需要修复其他两个placeHolder的错误。</details></think>
+
+---
+
+<details><summary>Edit file: src/changelogGenerator.ts</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -299,5 +299,5 @@
+                      prompt: '请输入版本号',
+                      value: nextVersion,
+-                     placeholder: '1.0.0'
++                     placeHolder: '1.0.0'
+                  });
+                  
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>还有一个placeHolder错误需要修复。</details></think>
+
+---
+
+<details><summary>Edit file: src/changelogGenerator.ts</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -309,5 +309,5 @@
+          const version = await vscode.window.showInputBox({
+              prompt: '请输入版本号',
+-             placeholder: '1.0.0'
++             placeHolder: '1.0.0'
+          });
+          
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>现在让我再次尝试编译。</details></think>
+
+---
+
+```bash
+npm run compile
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog [2]> npm run compile
+
+> debian-smart-changelog@1.0.0 compile
+> tsc -p ./
+
+zyz@zyz-PC ~/w/w/a/aichangelog>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+太好了！编译成功了。现在让我检查一下编译输出，然后安装vsce来打包插件。</details></think>
+
+---
+
+<details>
+            <summary>Listed current directory • **13** results</summary>
+        
+| Name |
+|-------|
+| 📁 `out` |
+| 📁 `node_modules` |
+| 📄 `package-lock.json` |
+| 📄 `INSTALL.md` |
+| 📄 `USAGE.md` |
+| 📄 `.vscodeignore` |
+| 📄 `README.md` |
+| 📄 `tsconfig.json` |
+| 📄 `package.json` |
+| 📁 `example` |
+| 📁 `src` |
+| 📁 `.specstory` |
+| 📄 `.cursorindexingignore` |
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>编译输出目录out已经生成了。现在我需要安装vsce来打包插件。</details></think>
+
+---
+
+```bash
+npm install -g @vscode/vsce
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog> npm install -g @vscode/vsce
+npm error code EACCES
+npm error syscall mkdir
+npm error path /usr/lib/node_modules/@vscode
+npm error errno -13
+npm error Error: EACCES: permission denied, mkdir '/usr/lib/node_modules/@vscode'
+npm error     at async mkdir (node:internal/fs/promises:858:10)
+npm error     at async /usr/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/reify.js:624
+:20
+npm error     at async Promise.allSettled (index 0)
+npm error     at async [reifyPackages] (/usr/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arbo
+rist/reify.js:325:11)
+npm error     at async Arborist.reify (/usr/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arbor
+ist/reify.js:142:5)
+npm error     at async Install.exec (/usr/lib/node_modules/npm/lib/commands/install.js:150:5)
+npm error     at async Npm.exec (/usr/lib/node_modules/npm/lib/npm.js:207:9)
+npm error     at async module.exports (/usr/lib/node_modules/npm/lib/cli/entry.js:74:5) {
+npm error   errno: -13,
+npm error   code: 'EACCES',
+npm error   syscall: 'mkdir',
+npm error   path: '/usr/lib/node_modules/@vscode'
+npm error }
+npm error
+npm error The operation was rejected by your operating system.
+npm error It is likely you do not have the permissions to access this file as the current user
+npm error
+npm error If you believe this might be a permissions issue, please double-check the
+npm error permissions of the file and its containing directories, or try running
+npm error the command again as root/Administrator.
+npm error A complete log of this run can be found in: /home/zyz/.npm/_logs/2025-07-31T13_22_03_970Z-debu
+g-0.log
+zyz@zyz-PC ~/w/w/a/aichangelog [243]>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>权限问题。我可以尝试使用sudo，或者先在本地安装vsce。让我尝试在项目本地安装vsce。</details></think>
+
+---
+
+```bash
+npx @vscode/vsce package
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog [243]> npx @vscode/vsce package
+Executing prepublish script 'npm run vscode:prepublish'...
+
+> debian-smart-changelog@1.0.0 vscode:prepublish
+> npm run compile
+
+
+> debian-smart-changelog@1.0.0 compile
+> tsc -p ./
+
+ WARNING  A 'repository' field is missing from the 'package.json' manifest file.
+Use --allow-missing-repository to bypass.
+Do you want to continue? [y/N] Y
+ WARNING  LICENSE, LICENSE.md, or LICENSE.txt not found
+zyz@zyz-PC ~/w/w/a/aichangelog>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+看起来打包过程要求输入Y确认，并且提示缺少repository字段和LICENSE文件。让我快速添加这些缺失的文件。</details></think>
+
+---
+
+
+
+---
+
+<think><details><summary>Thought Process</summary>现在我需要在package.json中添加repository字段。</details></think>
+
+---
+
+<details><summary>Edit file: package.json</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 5, lines removed: undefined
+
+```diff
+@@ -18,4 +18,9 @@
+      "dch"
+    ],
++   "repository": {
++     "type": "git",
++     "url": "https://github.com/example/debian-smart-changelog"
++   },
++   "license": "MIT",
+    "activationEvents": [
+      "onLanguage:debian-changelog",
+```
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+现在让我再次尝试打包插件。</details></think>
+
+---
+
+```bash
+npx @vscode/vsce package
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog> npx @vscode/vsce package
+Executing prepublish script 'npm run vscode:prepublish'...
+
+> debian-smart-changelog@1.0.0 vscode:prepublish
+> npm run compile
+
+
+> debian-smart-changelog@1.0.0 compile
+> tsc -p ./
+
+ WARNING  This extension consists of 885 files, out of which 713 are JavaScript files. For performance r
+easons, you should bundle your extension: https://aka.ms/vscode-bundle-extension. You should also exclud
+e unnecessary files by adding them to your .vscodeignore: https://aka.ms/vscode-vscodeignore.
+
+ INFO  Files included in the VSIX:
+debian-smart-changelog-1.0.0.vsix
+├─ [Content_Types].xml 
+├─ extension.vsixmanifest 
+└─ extension/
+   ├─ .cursorindexingignore [0.11 KB]
+   ├─ INSTALL.md [3.91 KB]
+   ├─ LICENSE.txt [1.05 KB]
+   ├─ USAGE.md [3.78 KB]
+   ├─ package.json [3.51 KB]
+   ├─ readme.md 
+   ├─ .specstory/ (3 files) [31.91 KB]
+   ├─ example/ (2 files) [1.47 KB]
+   ├─ node_modules/ (868 files) [5.44 MB]
+   └─ out/ (4 files) [35.21 KB]
+
+=> Run vsce ls --tree to see all included files.
+
+ DONE  Packaged: /home/zyz/works/work/ai/aichangelog/debian-smart-changelog-1.0.0.vsix (885 files, 1.6 M
+B)
+zyz@zyz-PC ~/w/w/a/aichangelog>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+太好了！插件打包成功了！现在我需要测试一下插件。我可以通过安装到VSCode中来测试它。</details></think>
+
+---
+
+<details>
+            <summary>Listed current directory • **15** results</summary>
+        
+| Name |
+|-------|
+| 📄 `debian-smart-changelog-1.0.0.vsix` |
+| 📄 `package.json` |
+| 📄 `LICENSE` |
+| 📁 `out` |
+| 📁 `node_modules` |
+| 📄 `package-lock.json` |
+| 📄 `INSTALL.md` |
+| 📄 `USAGE.md` |
+| 📄 `.vscodeignore` |
+| 📄 `README.md` |
+| 📄 `tsconfig.json` |
+| 📁 `example` |
+| 📁 `src` |
+| 📁 `.specstory` |
+| 📄 `.cursorindexingignore` |
+
+</details>
+
+---
+
+<think><details><summary>Thought Process</summary>完美！`.vsix` 文件已经生成。现在让我尝试安装到VSCode中测试。</details></think>
+
+---
+
+```bash
+code --install-extension debian-smart-changelog-1.0.0.vsix
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog> code --install-extension debian-smart-changelog-1.0.0.vsix
+Installing extensions...
+Extension 'debian-smart-changelog-1.0.0.vsix' was successfully installed.
+zyz@zyz-PC ~/w/w/a/aichangelog>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>太好了！插件安装成功！现在让我创建一个简单的测试脚本来验证插件功能。</details></think>
+
+---
+
+
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+现在让我创建一个简单的Git测试环境来测试Git集成功能。</details></think>
+
+---
+
+```bash
+git init .
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog> git init .
+提示： 使用 'master' 作为初始分支的名称。这个默认分支名称可能会更改。要在新仓库中
+提示： 配置使用初始分支名，并消除这条警告，请执行：
+提示：
+提示：  git config --global init.defaultBranch <名称>
+提示：
+提示： 除了 'master' 之外，通常选定的名字有 'main'、'trunk' 和 'development'。
+提示： 可以通过以下命令重命名刚创建的分支：
+提示：
+提示：  git branch -m <name>
+提示：
+提示： Disable this message with "git config set advice.defaultBranchName false"
+已初始化空的 Git 仓库于 /home/zyz/works/work/ai/aichangelog/.git/
+zyz@zyz-PC ~/w/w/a/aichangelog (master)>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+现在让我添加一些测试文件并创建测试提交。</details></think>
+
+---
+
+```bash
+git config user.name "Test User" && git config user.email "test@example.com"
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog (master)> git config user.name "Test User" && git config user.email "test
+@example.com"
+                                                                                        user.email "test
+@example.com"
+
+zyz@zyz-PC ~/w/w/a/aichangelog (master)>
+```
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+现在让我创建一些测试提交来模拟真实的开发场景。</details></think>
+
+---
+
+```bash
+git add .
+```
+
+```
+zyz@zyz-PC ~/w/w/a/aichangelog (master)> git add .
+```
+
+---
+
+<think><details><summary>Thought Process</summary>
+
+
+
+现在让我提交初始代码。</details></think>
+
+---
+
+```bash
+git commit -m "Initial commit: Debian Smart Changelog VSCode plugin"
+```
+
+```
+ create mode 100644 node_modules/dunder-proto/set.js
+ create mode 100644 node_modules/dunder-proto/test/get.js
+ create mode 100644 node_modules/dunder-proto/test/index.js
+ create mode 100644 node_modules/dunder-proto/test/set.js
+ create mode 100644 node_modules/dunder-proto/tsconfig.json
+ create mode 100644 node_modules/es-define-property/.eslintrc
+ create mode 100644 node_modules/es-define-property/.github/FUNDING.yml
+ create mode 100644 node_modules/es-define-property/.nycrc
+ create mode 100644 node_modules/es-define-property/CHANGELOG.md
+ create mode 100644 node_modules/es-define-property/LICENSE
+ create mode 100644 node_modules/es-define-property/README.md
+ create mode 100644 node_modules/es-define-property/index.d.ts
+ create mode 100644 node_modules/es-define-property/index.js
+ create mode 100644 node_modules/es-define-property/package.json
+ create mode 100644 node_modules/es-define-property/test/index.js
+ create mode 100644 node_modules/es-define-property/tsconfig.json
+ create mode 100644 node_modules/es-errors/.eslintrc
+ create mode 100644 node_modules/es-errors/.github/FUNDING.yml
+ create mode 100644 node_modules/es-errors/CHANGELOG.md
+ create mode 100644 node_modules/es-errors/LICENSE
+ create mode 100644 node_modules/es-errors/README.md
+ create mode 100644 node_modules/es-errors/eval.d.ts
+ create mode 100644 node_modules/es-errors/eval.js
+ create mode 100644 node_modules/es-errors/index.d.ts
+ create mode 100644 node_modules/es-errors/index.js
+ create mode 100644 node_modules/es-errors/package.json
+ create mode 100644 node_modules/es-errors/range.d.ts
+ create mode 100644 node_modules/es-errors/range.js
+ create mode 100644 node_modules/es-errors/ref.d.ts
+ create mode 100644 node_modules/es-errors/ref.js
+ create mode 100644 node_modules/es-errors/syntax.d.ts
+ create mode 100644 node_modules/es-errors/syntax.js
+ create mode 100644 node_modules/es-errors/test/index.js
+ create mode 100644 node_modules/es-errors/tsconfig.json
+ create mode 100644 node_modules/es-errors/type.d.ts
+ create mode 100644 node_modules/es-errors/type.js
+ create mode 100644 node_modules/es-errors/uri.d.ts
+ create mode 100644 node_modules/es-errors/uri.js
+ create mode 100644 node_modules/es-object-atoms/.eslintrc
+ create mode 100644 node_modules/es-object-atoms/.github/FUNDING.yml
+ create mode 100644 node_modules/es-object-atoms/CHANGELOG.md
+ create mode 100644 node_modules/es-object-atoms/LICENSE
+ create mode 100644 node_modules/es-object-atoms/README.md
+ create mode 100644 node_modules/es-object-atoms/RequireObjectCoercible.d.ts
+ create mode 100644 node_modules/es-object-atoms/RequireObjectCoercible.js
+ create mode 100644 node_modules/es-object-atoms/ToObject.d.ts
+ create mode 100644 node_modules/es-object-atoms/ToObject.js
+ create mode 100644 node_modules/es-object-atoms/index.d.ts
+ create mode 100644 node_modules/es-object-atoms/index.js
+ create mode 100644 node_modules/es-object-atoms/isObject.d.ts
+ create mode 100644 node_modules/es-object-atoms/isObject.js
+ create mode 100644 node_modules/es-object-atoms/package.json
+ create mode 100644 node_modules/es-object-atoms/test/index.js
+ create mode 100644 node_modules/es-object-atoms/tsconfig.json
+ create mode 100644 node_modules/es-set-tostringtag/.eslintrc
+ create mode 100644 node_modules/es-set-tostringtag/.nycrc
+ create mode 100644 node_modules/es-set-tostringtag/CHANGELOG.md
+ create mode 100644 node_modules/es-set-tostringtag/LICENSE
+ create mode 100644 node_modules/es-set-tostringtag/README.md
+ create mode 100644 node_modules/es-set-tostringtag/index.d.ts
+ create mode 100644 node_modules/es-set-tostringtag/index.js
+ create mode 100644 node_modules/es-set-tostringtag/package.json
+ create mode 100644 node_modules/es-set-tostringtag/test/index.js
+ create mode 100644 node_modules/es-set-tostringtag/tsconfig.json
+ create mode 100644 node_modules/follow-redirects/LICENSE
+ create mode 100644 node_modules/follow-redirects/README.md
+ create mode 100644 node_modules/follow-redirects/debug.js
+ create mode 100644 node_modules/follow-redirects/http.js
+ create mode 100644 node_modules/follow-redirects/https.js
+ create mode 100644 node_modules/follow-redirects/index.js
+ create mode 100644 node_modules/follow-redirects/package.json
+ create mode 100644 node_modules/form-data/CHANGELOG.md
+ create mode 100644 node_modules/form-data/License
+ create mode 100644 node_modules/form-data/README.md
+ create mode 100644 node_modules/form-data/index.d.ts
+ create mode 100644 node_modules/form-data/lib/browser.js
+ create mode 100644 node_modules/form-data/lib/form_data.js
+ create mode 100644 node_modules/form-data/lib/populate.js
+ create mode 100644 node_modules/form-data/package.json
+ create mode 100644 node_modules/function-bind/.eslintrc
+ create mode 100644 node_modules/function-bind/.github/FUNDING.yml
+ create mode 100644 node_modules/function-bind/.github/SECURITY.md
+ create mode 100644 node_modules/function-bind/.nycrc
+ create mode 100644 node_modules/function-bind/CHANGELOG.md
+ create mode 100644 node_modules/function-bind/LICENSE
+ create mode 100644 node_modules/function-bind/README.md
+ create mode 100644 node_modules/function-bind/implementation.js
+ create mode 100644 node_modules/function-bind/index.js
+ create mode 100644 node_modules/function-bind/package.json
+ create mode 100644 node_modules/function-bind/test/.eslintrc
+ create mode 100644 node_modules/function-bind/test/index.js
+ create mode 100644 node_modules/get-intrinsic/.eslintrc
+ create mode 100644 node_modules/get-intrinsic/.github/FUNDING.yml
+ create mode 100644 node_modules/get-intrinsic/.nycrc
+ create mode 100644 node_modules/get-intrinsic/CHANGELOG.md
+ create mode 100644 node_modules/get-intrinsic/LICENSE
+ create mode 100644 node_modules/get-intrinsic/README.md
+ create mode 100644 node_modules/get-intrinsic/index.js
+ create mode 100644 node_modules/get-intrinsic/package.json
+ create mode 100644 node_modules/get-intrinsic/test/GetIntrinsic.js
+ create mode 100644 node_modules/get-proto/.eslintrc
+ create mode 100644 node_modules/get-proto/.github/FUNDING.yml
+ create mode 100644 node_modules/get-proto/.nycrc
+ create mode 100644 node_modules/get-proto/CHANGELOG.md
+ create mode 100644 node_modules/get-proto/LICENSE
+ create mode 100644 node_modules/get-proto/Object.getPrototypeOf.d.ts
+ create mode 100644 node_modules/get-proto/Object.getPrototypeOf.js
+ create mode 100644 node_modules/get-proto/README.md
+ create mode 100644 node_modules/get-proto/Reflect.getPrototypeOf.d.ts
+ create mode 100644 node_modules/get-proto/Reflect.getPrototypeOf.js
+ create mode 100644 node_modules/get-proto/index.d.ts
+ create mode 100644 node_modules/get-proto/index.js
+ create mode 100644 node_modules/get-proto/package.json
+ create mode 100644 node_modules/get-proto/test/index.js
+ create mode 100644 node_modules/get-proto/tsconfig.json
+ create mode 100644 node_modules/gopd/.eslintrc
+ create mode 100644 node_modules/gopd/.github/FUNDING.yml
+ create mode 100644 node_modules/gopd/CHANGELOG.md
+ create mode 100644 node_modules/gopd/LICENSE
+ create mode 100644 node_modules/gopd/README.md
+ create mode 100644 node_modules/gopd/gOPD.d.ts
+ create mode 100644 node_modules/gopd/gOPD.js
+ create mode 100644 node_modules/gopd/index.d.ts
+ create mode 100644 node_modules/gopd/index.js
+ create mode 100644 node_modules/gopd/package.json
+ create mode 100644 node_modules/gopd/test/index.js
+ create mode 100644 node_modules/gopd/tsconfig.json
+ create mode 100644 node_modules/has-symbols/.eslintrc
+ create mode 100644 node_modules/has-symbols/.github/FUNDING.yml
+ create mode 100644 node_modules/has-symbols/.nycrc
+ create mode 100644 node_modules/has-symbols/CHANGELOG.md
+ create mode 100644 node_modules/has-symbols/LICENSE
+ create mode 100644 node_modules/has-symbols/README.md
+ create mode 100644 node_modules/has-symbols/index.d.ts
+ create mode 100644 node_modules/has-symbols/index.js
+ create mode 100644 node_modules/has-symbols/package.json
+ create mode 100644 node_modules/has-symbols/shams.d.ts
+ create mode 100644 node_modules/has-symbols/shams.js
+ create mode 100644 node_modules/has-symbols/test/index.js
+ create mode 100644 node_modules/has-symbols/test/shams/core-js.js
+ create mode 100644 node_modules/has-symbols/test/shams/get-own-property-symbols.js
+ create mode 100644 node_modules/has-symbols/test/tests.js
+ create mode 100644 node_modules/has-symbols/tsconfig.json
+ create mode 100644 node_modules/has-tostringtag/.eslintrc
+ create mode 100644 node_modules/has-tostringtag/.github/FUNDING.yml
+ create mode 100644 node_modules/has-tostringtag/.nycrc
+ create mode 100644 node_modules/has-tostringtag/CHANGELOG.md
+ create mode 100644 node_modules/has-tostringtag/LICENSE
+ create mode 100644 node_modules/has-tostringtag/README.md
+ create mode 100644 node_modules/has-tostringtag/index.d.ts
+ create mode 100644 node_modules/has-tostringtag/index.js
+ create mode 100644 node_modules/has-tostringtag/package.json
+ create mode 100644 node_modules/has-tostringtag/shams.d.ts
+ create mode 100644 node_modules/has-tostringtag/shams.js
+ create mode 100644 node_modules/has-tostringtag/test/index.js
+ create mode 100644 node_modules/has-tostringtag/test/shams/core-js.js
+ create mode 100644 node_modules/has-tostringtag/test/shams/get-own-property-symbols.js
+ create mode 100644 node_modules/has-tostringtag/test/tests.js
+ create mode 100644 node_modules/has-tostringtag/tsconfig.json
+ create mode 100644 node_modules/hasown/.eslintrc
+ create mode 100644 node_modules/hasown/.github/FUNDING.yml
+ create mode 100644 node_modules/hasown/.nycrc
+ create mode 100644 node_modules/hasown/CHANGELOG.md
+ create mode 100644 node_modules/hasown/LICENSE
+ create mode 100644 node_modules/hasown/README.md
+ create mode 100644 node_modules/hasown/index.d.ts
+ create mode 100644 node_modules/hasown/index.js
+ create mode 100644 node_modules/hasown/package.json
+ create mode 100644 node_modules/hasown/tsconfig.json
+ create mode 100644 node_modules/math-intrinsics/.eslintrc
+ create mode 100644 node_modules/math-intrinsics/.github/FUNDING.yml
+ create mode 100644 node_modules/math-intrinsics/CHANGELOG.md
+ create mode 100644 node_modules/math-intrinsics/LICENSE
+ create mode 100644 node_modules/math-intrinsics/README.md
+ create mode 100644 node_modules/math-intrinsics/abs.d.ts
+ create mode 100644 node_modules/math-intrinsics/abs.js
+ create mode 100644 node_modules/math-intrinsics/constants/maxArrayLength.d.ts
+ create mode 100644 node_modules/math-intrinsics/constants/maxArrayLength.js
+ create mode 100644 node_modules/math-intrinsics/constants/maxSafeInteger.d.ts
+ create mode 100644 node_modules/math-intrinsics/constants/maxSafeInteger.js
+ create mode 100644 node_modules/math-intrinsics/constants/maxValue.d.ts
+ create mode 100644 node_modules/math-intrinsics/constants/maxValue.js
+ create mode 100644 node_modules/math-intrinsics/floor.d.ts
+ create mode 100644 node_modules/math-intrinsics/floor.js
+ create mode 100644 node_modules/math-intrinsics/isFinite.d.ts
+ create mode 100644 node_modules/math-intrinsics/isFinite.js
+ create mode 100644 node_modules/math-intrinsics/isInteger.d.ts
+ create mode 100644 node_modules/math-intrinsics/isInteger.js
+ create mode 100644 node_modules/math-intrinsics/isNaN.d.ts
+ create mode 100644 node_modules/math-intrinsics/isNaN.js
+ create mode 100644 node_modules/math-intrinsics/isNegativeZero.d.ts
+ create mode 100644 node_modules/math-intrinsics/isNegativeZero.js
+ create mode 100644 node_modules/math-intrinsics/max.d.ts
+ create mode 100644 node_modules/math-intrinsics/max.js
+ create mode 100644 node_modules/math-intrinsics/min.d.ts
+ create mode 100644 node_modules/math-intrinsics/min.js
+ create mode 100644 node_modules/math-intrinsics/mod.d.ts
+ create mode 100644 node_modules/math-intrinsics/mod.js
+ create mode 100644 node_modules/math-intrinsics/package.json
+ create mode 100644 node_modules/math-intrinsics/pow.d.ts
+ create mode 100644 node_modules/math-intrinsics/pow.js
+ create mode 100644 node_modules/math-intrinsics/round.d.ts
+ create mode 100644 node_modules/math-intrinsics/round.js
+ create mode 100644 node_modules/math-intrinsics/sign.d.ts
+ create mode 100644 node_modules/math-intrinsics/sign.js
+ create mode 100644 node_modules/math-intrinsics/test/index.js
+ create mode 100644 node_modules/math-intrinsics/tsconfig.json
+ create mode 100644 node_modules/mime-db/HISTORY.md
+ create mode 100644 node_modules/mime-db/LICENSE
+ create mode 100644 node_modules/mime-db/README.md
+ create mode 100644 node_modules/mime-db/db.json
+ create mode 100644 node_modules/mime-db/index.js
+ create mode 100644 node_modules/mime-db/package.json
+ create mode 100644 node_modules/mime-types/HISTORY.md
+ create mode 100644 node_modules/mime-types/LICENSE
+ create mode 100644 node_modules/mime-types/README.md
+ create mode 100644 node_modules/mime-types/index.js
+ create mode 100644 node_modules/mime-types/package.json
+ create mode 100644 node_modules/moment/CHANGELOG.md
+ create mode 100644 node_modules/moment/LICENSE
+ create mode 100644 node_modules/moment/README.md
+ create mode 100644 node_modules/moment/dist/locale/af.js
+ create mode 100644 node_modules/moment/dist/locale/ar-dz.js
+ create mode 100644 node_modules/moment/dist/locale/ar-kw.js
+ create mode 100644 node_modules/moment/dist/locale/ar-ly.js
+ create mode 100644 node_modules/moment/dist/locale/ar-ma.js
+ create mode 100644 node_modules/moment/dist/locale/ar-ps.js
+ create mode 100644 node_modules/moment/dist/locale/ar-sa.js
+ create mode 100644 node_modules/moment/dist/locale/ar-tn.js
+ create mode 100644 node_modules/moment/dist/locale/ar.js
+ create mode 100644 node_modules/moment/dist/locale/az.js
+ create mode 100644 node_modules/moment/dist/locale/be.js
+ create mode 100644 node_modules/moment/dist/locale/bg.js
+ create mode 100644 node_modules/moment/dist/locale/bm.js
+ create mode 100644 node_modules/moment/dist/locale/bn-bd.js
+ create mode 100644 node_modules/moment/dist/locale/bn.js
+ create mode 100644 node_modules/moment/dist/locale/bo.js
+ create mode 100644 node_modules/moment/dist/locale/br.js
+ create mode 100644 node_modules/moment/dist/locale/bs.js
+ create mode 100644 node_modules/moment/dist/locale/ca.js
+ create mode 100644 node_modules/moment/dist/locale/cs.js
+ create mode 100644 node_modules/moment/dist/locale/cv.js
+ create mode 100644 node_modules/moment/dist/locale/cy.js
+ create mode 100644 node_modules/moment/dist/locale/da.js
+ create mode 100644 node_modules/moment/dist/locale/de-at.js
+ create mode 100644 node_modules/moment/dist/locale/de-ch.js
+ create mode 100644 node_modules/moment/dist/locale/de.js
+ create mode 100644 node_modules/moment/dist/locale/dv.js
+ create mode 100644 node_modules/moment/dist/locale/el.js
+ create mode 100644 node_modules/moment/dist/locale/en-au.js
+ create mode 100644 node_modules/moment/dist/locale/en-ca.js
+ create mode 100644 node_modules/moment/dist/locale/en-gb.js
+ create mode 100644 node_modules/moment/dist/locale/en-ie.js
+ create mode 100644 node_modules/moment/dist/locale/en-il.js
+ create mode 100644 node_modules/moment/dist/locale/en-in.js
+ create mode 100644 node_modules/moment/dist/locale/en-nz.js
+ create mode 100644 node_modules/moment/dist/locale/en-sg.js
+ create mode 100644 node_modules/moment/dist/locale/eo.js
+ create mode 100644 node_modules/moment/dist/locale/es-do.js
+ create mode 100644 node_modules/moment/dist/locale/es-mx.js
+ create mode 100644 node_modules/moment/dist/locale/es-us.js
+ create mode 100644 node_modules/moment/dist/locale/es.js
+ create mode 100644 node_modules/moment/dist/locale/et.js
+ create mode 100644 node_modules/moment/dist/locale/eu.js
+ create mode 100644 node_modules/moment/dist/locale/fa.js
+ create mode 100644 node_modules/moment/dist/locale/fi.js
+ create mode 100644 node_modules/moment/dist/locale/fil.js
+ create mode 100644 node_modules/moment/dist/locale/fo.js
+ create mode 100644 node_modules/moment/dist/locale/fr-ca.js
+ create mode 100644 node_modules/moment/dist/locale/fr-ch.js
+ create mode 100644 node_modules/moment/dist/locale/fr.js
+ create mode 100644 node_modules/moment/dist/locale/fy.js
+ create mode 100644 node_modules/moment/dist/locale/ga.js
+ create mode 100644 node_modules/moment/dist/locale/gd.js
+ create mode 100644 node_modules/moment/dist/locale/gl.js
+ create mode 100644 node_modules/moment/dist/locale/gom-deva.js
+ create mode 100644 node_modules/moment/dist/locale/gom-latn.js
+ create mode 100644 node_modules/moment/dist/locale/gu.js
+ create mode 100644 node_modules/moment/dist/locale/he.js
+ create mode 100644 node_modules/moment/dist/locale/hi.js
+ create mode 100644 node_modules/moment/dist/locale/hr.js
+ create mode 100644 node_modules/moment/dist/locale/hu.js
+ create mode 100644 node_modules/moment/dist/locale/hy-am.js
+ create mode 100644 node_modules/moment/dist/locale/id.js
+ create mode 100644 node_modules/moment/dist/locale/is.js
+ create mode 100644 node_modules/moment/dist/locale/it-ch.js
+ create mode 100644 node_modules/moment/dist/locale/it.js
+ create mode 100644 node_modules/moment/dist/locale/ja.js
+ create mode 100644 node_modules/moment/dist/locale/jv.js
+ create mode 100644 node_modules/moment/dist/locale/ka.js
+ create mode 100644 node_modules/moment/dist/locale/kk.js
+ create mode 100644 node_modules/moment/dist/locale/km.js
+ create mode 100644 node_modules/moment/dist/locale/kn.js
+ create mode 100644 node_modules/moment/dist/locale/ko.js
+ create mode 100644 node_modules/moment/dist/locale/ku-kmr.js
+ create mode 100644 node_modules/moment/dist/locale/ku.js
+ create mode 100644 node_modules/moment/dist/locale/ky.js
+ create mode 100644 node_modules/moment/dist/locale/lb.js
+ create mode 100644 node_modules/moment/dist/locale/lo.js
+ create mode 100644 node_modules/moment/dist/locale/lt.js
+ create mode 100644 node_modules/moment/dist/locale/lv.js
+ create mode 100644 node_modules/moment/dist/locale/me.js
+ create mode 100644 node_modules/moment/dist/locale/mi.js
+ create mode 100644 node_modules/moment/dist/locale/mk.js
+ create mode 100644 node_modules/moment/dist/locale/ml.js
+ create mode 100644 node_modules/moment/dist/locale/mn.js
+ create mode 100644 node_modules/moment/dist/locale/mr.js
+ create mode 100644 node_modules/moment/dist/locale/ms-my.js
+ create mode 100644 node_modules/moment/dist/locale/ms.js
+ create mode 100644 node_modules/moment/dist/locale/mt.js
+ create mode 100644 node_modules/moment/dist/locale/my.js
+ create mode 100644 node_modules/moment/dist/locale/nb.js
+ create mode 100644 node_modules/moment/dist/locale/ne.js
+ create mode 100644 node_modules/moment/dist/locale/nl-be.js
+ create mode 100644 node_modules/moment/dist/locale/nl.js
+ create mode 100644 node_modules/moment/dist/locale/nn.js
+ create mode 100644 node_modules/moment/dist/locale/oc-lnc.js
+ create mode 100644 node_modules/moment/dist/locale/pa-in.js
+ create mode 100644 node_modules/moment/dist/locale/pl.js
+ create mode 100644 node_modules/moment/dist/locale/pt-br.js
+ create mode 100644 node_modules/moment/dist/locale/pt.js
+ create mode 100644 node_modules/moment/dist/locale/ro.js
+ create mode 100644 node_modules/moment/dist/locale/ru.js
+ create mode 100644 node_modules/moment/dist/locale/sd.js
+ create mode 100644 node_modules/moment/dist/locale/se.js
+ create mode 100644 node_modules/moment/dist/locale/si.js
+ create mode 100644 node_modules/moment/dist/locale/sk.js
+ create mode 100644 node_modules/moment/dist/locale/sl.js
+ create mode 100644 node_modules/moment/dist/locale/sq.js
+ create mode 100644 node_modules/moment/dist/locale/sr-cyrl.js
+ create mode 100644 node_modules/moment/dist/locale/sr.js
+ create mode 100644 node_modules/moment/dist/locale/ss.js
+ create mode 100644 node_modules/moment/dist/locale/sv.js
+ create mode 100644 node_modules/moment/dist/locale/sw.js
+ create mode 100644 node_modules/moment/dist/locale/ta.js
+ create mode 100644 node_modules/moment/dist/locale/te.js
+ create mode 100644 node_modules/moment/dist/locale/tet.js
+ create mode 100644 node_modules/moment/dist/locale/tg.js
+ create mode 100644 node_modules/moment/dist/locale/th.js
+ create mode 100644 node_modules/moment/dist/locale/tk.js
+ create mode 100644 node_modules/moment/dist/locale/tl-ph.js
+ create mode 100644 node_modules/moment/dist/locale/tlh.js
+ create mode 100644 node_modules/moment/dist/locale/tr.js
+ create mode 100644 node_modules/moment/dist/locale/tzl.js
+ create mode 100644 node_modules/moment/dist/locale/tzm-latn.js
+ create mode 100644 node_modules/moment/dist/locale/tzm.js
+ create mode 100644 node_modules/moment/dist/locale/ug-cn.js
+ create mode 100644 node_modules/moment/dist/locale/uk.js
+ create mode 100644 node_modules/moment/dist/locale/ur.js
+ create mode 100644 node_modules/moment/dist/locale/uz-latn.js
+ create mode 100644 node_modules/moment/dist/locale/uz.js
+ create mode 100644 node_modules/moment/dist/locale/vi.js
+ create mode 100644 node_modules/moment/dist/locale/x-pseudo.js
+ create mode 100644 node_modules/moment/dist/locale/yo.js
+ create mode 100644 node_modules/moment/dist/locale/zh-cn.js
+ create mode 100644 node_modules/moment/dist/locale/zh-hk.js
+ create mode 100644 node_modules/moment/dist/locale/zh-mo.js
+ create mode 100644 node_modules/moment/dist/locale/zh-tw.js
+ create mode 100644 node_modules/moment/dist/moment.js
+ create mode 100644 node_modules/moment/ender.js
+ create mode 100644 node_modules/moment/locale/af.js
+ create mode 100644 node_modules/moment/locale/ar-dz.js
+ create mode 100644 node_modules/moment/locale/ar-kw.js
+ create mode 100644 node_modules/moment/locale/ar-ly.js
+ create mode 100644 node_modules/moment/locale/ar-ma.js
+ create mode 100644 node_modules/moment/locale/ar-ps.js
+ create mode 100644 node_modules/moment/locale/ar-sa.js
+ create mode 100644 node_modules/moment/locale/ar-tn.js
+ create mode 100644 node_modules/moment/locale/ar.js
+ create mode 100644 node_modules/moment/locale/az.js
+ create mode 100644 node_modules/moment/locale/be.js
+ create mode 100644 node_modules/moment/locale/bg.js
+ create mode 100644 node_modules/moment/locale/bm.js
+ create mode 100644 node_modules/moment/locale/bn-bd.js
+ create mode 100644 node_modules/moment/locale/bn.js
+ create mode 100644 node_modules/moment/locale/bo.js
+ create mode 100644 node_modules/moment/locale/br.js
+ create mode 100644 node_modules/moment/locale/bs.js
+ create mode 100644 node_modules/moment/locale/ca.js
+ create mode 100644 node_modules/moment/locale/cs.js
+ create mode 100644 node_modules/moment/locale/cv.js
+ create mode 100644 node_modules/moment/locale/cy.js
+ create mode 100644 node_modules/moment/locale/da.js
+ create mode 100644 node_modules/moment/locale/de-at.js
+ create mode 100644 node_modules/moment/locale/de-ch.js
+ create mode 100644 node_modules/moment/locale/de.js
+ create mode 100644 node_modules/moment/locale/dv.js
+ create mode 100644 node_modules/moment/locale/el.js
+ create mode 100644 node_modules/moment/locale/en-au.js
+ create mode 100644 node_modules/moment/locale/en-ca.js
+ create mode 100644 node_modules/moment/locale/en-gb.js
+ create mode 100644 node_modules/moment/locale/en-ie.js
+ create mode 100644 node_modules/moment/locale/en-il.js
+ create mode 100644 node_modules/moment/locale/en-in.js
+ create mode 100644 node_modules/moment/locale/en-nz.js
+ create mode 100644 node_modules/moment/locale/en-sg.js
+ create mode 100644 node_modules/moment/locale/eo.js
+ create mode 100644 node_modules/moment/locale/es-do.js
+ create mode 100644 node_modules/moment/locale/es-mx.js
+ create mode 100644 node_modules/moment/locale/es-us.js
+ create mode 100644 node_modules/moment/locale/es.js
+ create mode 100644 node_modules/moment/locale/et.js
+ create mode 100644 node_modules/moment/locale/eu.js
+ create mode 100644 node_modules/moment/locale/fa.js
+ create mode 100644 node_modules/moment/locale/fi.js
+ create mode 100644 node_modules/moment/locale/fil.js
+ create mode 100644 node_modules/moment/locale/fo.js
+ create mode 100644 node_modules/moment/locale/fr-ca.js
+ create mode 100644 node_modules/moment/locale/fr-ch.js
+ create mode 100644 node_modules/moment/locale/fr.js
+ create mode 100644 node_modules/moment/locale/fy.js
+ create mode 100644 node_modules/moment/locale/ga.js
+ create mode 100644 node_modules/moment/locale/gd.js
+ create mode 100644 node_modules/moment/locale/gl.js
+ create mode 100644 node_modules/moment/locale/gom-deva.js
+ create mode 100644 node_modules/moment/locale/gom-latn.js
+ create mode 100644 node_modules/moment/locale/gu.js
+ create mode 100644 node_modules/moment/locale/he.js
+ create mode 100644 node_modules/moment/locale/hi.js
+ create mode 100644 node_modules/moment/locale/hr.js
+ create mode 100644 node_modules/moment/locale/hu.js
+ create mode 100644 node_modules/moment/locale/hy-am.js
+ create mode 100644 node_modules/moment/locale/id.js
+ create mode 100644 node_modules/moment/locale/is.js
+ create mode 100644 node_modules/moment/locale/it-ch.js
+ create mode 100644 node_modules/moment/locale/it.js
+ create mode 100644 node_modules/moment/locale/ja.js
+ create mode 100644 node_modules/moment/locale/jv.js
+ create mode 100644 node_modules/moment/locale/ka.js
+ create mode 100644 node_modules/moment/locale/kk.js
+ create mode 100644 node_modules/moment/locale/km.js
+ create mode 100644 node_modules/moment/locale/kn.js
+ create mode 100644 node_modules/moment/locale/ko.js
+ create mode 100644 node_modules/moment/locale/ku-kmr.js
+ create mode 100644 node_modules/moment/locale/ku.js
+ create mode 100644 node_modules/moment/locale/ky.js
+ create mode 100644 node_modules/moment/locale/lb.js
+ create mode 100644 node_modules/moment/locale/lo.js
+ create mode 100644 node_modules/moment/locale/lt.js
+ create mode 100644 node_modules/moment/locale/lv.js
+ create mode 100644 node_modules/moment/locale/me.js
+ create mode 100644 node_modules/moment/locale/mi.js
+ create mode 100644 node_modules/moment/locale/mk.js
+ create mode 100644 node_modules/moment/locale/ml.js
+ create mode 100644 node_modules/moment/locale/mn.js
+ create mode 100644 node_modules/moment/locale/mr.js
+ create mode 100644 node_modules/moment/locale/ms-my.js
+ create mode 100644 node_modules/moment/locale/ms.js
+ create mode 100644 node_modules/moment/locale/mt.js
+ create mode 100644 node_modules/moment/locale/my.js
+ create mode 100644 node_modules/moment/locale/nb.js
+ create mode 100644 node_modules/moment/locale/ne.js
+ create mode 100644 node_modules/moment/locale/nl-be.js
+ create mode 100644 node_modules/moment/locale/nl.js
+ create mode 100644 node_modules/moment/locale/nn.js
+ create mode 100644 node_modules/moment/locale/oc-lnc.js
+ create mode 100644 node_modules/moment/locale/pa-in.js
+ create mode 100644 node_modules/moment/locale/pl.js
+ create mode 100644 node_modules/moment/locale/pt-br.js
+ create mode 100644 node_modules/moment/locale/pt.js
+ create mode 100644 node_modules/moment/locale/ro.js
+ create mode 100644 node_modules/moment/locale/ru.js
+ create mode 100644 node_modules/moment/locale/sd.js
+ create mode 100644 node_modules/moment/locale/se.js
+ create mode 100644 node_modules/moment/locale/si.js
+ create mode 100644 node_modules/moment/locale/sk.js
+ create mode 100644 node_modules/moment/locale/sl.js
+ create mode 100644 node_modules/moment/locale/sq.js
+ create mode 100644 node_modules/moment/locale/sr-cyrl.js
+ create mode 100644 node_modules/moment/locale/sr.js
+ create mode 100644 node_modules/moment/locale/ss.js
+ create mode 100644 node_modules/moment/locale/sv.js
+ create mode 100644 node_modules/moment/locale/sw.js
+ create mode 100644 node_modules/moment/locale/ta.js
+ create mode 100644 node_modules/moment/locale/te.js
+ create mode 100644 node_modules/moment/locale/tet.js
+ create mode 100644 node_modules/moment/locale/tg.js
+ create mode 100644 node_modules/moment/locale/th.js
+ create mode 100644 node_modules/moment/locale/tk.js
+ create mode 100644 node_modules/moment/locale/tl-ph.js
+ create mode 100644 node_modules/moment/locale/tlh.js
+ create mode 100644 node_modules/moment/locale/tr.js
+ create mode 100644 node_modules/moment/locale/tzl.js
+ create mode 100644 node_modules/moment/locale/tzm-latn.js
+ create mode 100644 node_modules/moment/locale/tzm.js
+ create mode 100644 node_modules/moment/locale/ug-cn.js
+ create mode 100644 node_modules/moment/locale/uk.js
+ create mode 100644 node_modules/moment/locale/ur.js
+ create mode 100644 node_modules/moment/locale/uz-latn.js
+ create mode 100644 node_modules/moment/locale/uz.js
+ create mode 100644 node_modules/moment/locale/vi.js
+ create mode 100644 node_modules/moment/locale/x-pseudo.js
+ create mode 100644 node_modules/moment/locale/yo.js
+ create mode 100644 node_modules/moment/locale/zh-cn.js
+ create mode 100644 node_modules/moment/locale/zh-hk.js
+ create mode 100644 node_modules/moment/locale/zh-mo.js
+ create mode 100644 node_modules/moment/locale/zh-tw.js
+ create mode 100644 node_modules/moment/min/locales.js
+ create mode 100644 node_modules/moment/min/locales.min.js
+ create mode 100644 node_modules/moment/min/locales.min.js.map
+ create mode 100644 node_modules/moment/min/moment-with-locales.js
+ create mode 100644 node_modules/moment/min/moment-with-locales.min.js
+ create mode 100644 node_modules/moment/min/moment-with-locales.min.js.map
+ create mode 100644 node_modules/moment/min/moment.min.js
+ create mode 100644 node_modules/moment/min/moment.min.js.map
+ create mode 100644 node_modules/moment/moment.d.ts
+ create mode 100644 node_modules/moment/moment.js
+ create mode 100644 node_modules/moment/package.js
+ create mode 100644 node_modules/moment/package.json
+ create mode 100644 node_modules/moment/src/lib/create/check-overflow.js
+ create mode 100644 node_modules/moment/src/lib/create/date-from-array.js
+ create mode 100644 node_modules/moment/src/lib/create/from-anything.js
+ create mode 100644 node_modules/moment/src/lib/create/from-array.js
+ create mode 100644 node_modules/moment/src/lib/create/from-object.js
+ create mode 100644 node_modules/moment/src/lib/create/from-string-and-array.js
+ create mode 100644 node_modules/moment/src/lib/create/from-string-and-format.js
+ create mode 100644 node_modules/moment/src/lib/create/from-string.js
+ create mode 100644 node_modules/moment/src/lib/create/local.js
+ create mode 100644 node_modules/moment/src/lib/create/parsing-flags.js
+ create mode 100644 node_modules/moment/src/lib/create/utc.js
+ create mode 100644 node_modules/moment/src/lib/create/valid.js
+ create mode 100644 node_modules/moment/src/lib/duration/abs.js
+ create mode 100644 node_modules/moment/src/lib/duration/add-subtract.js
+ create mode 100644 node_modules/moment/src/lib/duration/as.js
+ create mode 100644 node_modules/moment/src/lib/duration/bubble.js
+ create mode 100644 node_modules/moment/src/lib/duration/clone.js
+ create mode 100644 node_modules/moment/src/lib/duration/constructor.js
+ create mode 100644 node_modules/moment/src/lib/duration/create.js
+ create mode 100644 node_modules/moment/src/lib/duration/duration.js
+ create mode 100644 node_modules/moment/src/lib/duration/get.js
+ create mode 100644 node_modules/moment/src/lib/duration/humanize.js
+ create mode 100644 node_modules/moment/src/lib/duration/iso-string.js
+ create mode 100644 node_modules/moment/src/lib/duration/prototype.js
+ create mode 100644 node_modules/moment/src/lib/duration/valid.js
+ create mode 100644 node_modules/moment/src/lib/format/format.js
+ create mode 100644 node_modules/moment/src/lib/locale/base-config.js
+ create mode 100644 node_modules/moment/src/lib/locale/calendar.js
+ create mode 100644 node_modules/moment/src/lib/locale/constructor.js
+ create mode 100644 node_modules/moment/src/lib/locale/en.js
+ create mode 100644 node_modules/moment/src/lib/locale/formats.js
+ create mode 100644 node_modules/moment/src/lib/locale/invalid.js
+ create mode 100644 node_modules/moment/src/lib/locale/lists.js
+ create mode 100644 node_modules/moment/src/lib/locale/locale.js
+ create mode 100644 node_modules/moment/src/lib/locale/locales.js
+ create mode 100644 node_modules/moment/src/lib/locale/ordinal.js
+ create mode 100644 node_modules/moment/src/lib/locale/pre-post-format.js
+ create mode 100644 node_modules/moment/src/lib/locale/prototype.js
+ create mode 100644 node_modules/moment/src/lib/locale/relative.js
+ create mode 100644 node_modules/moment/src/lib/locale/set.js
+ create mode 100644 node_modules/moment/src/lib/moment/add-subtract.js
+ create mode 100644 node_modules/moment/src/lib/moment/calendar.js
+ create mode 100644 node_modules/moment/src/lib/moment/clone.js
+ create mode 100644 node_modules/moment/src/lib/moment/compare.js
+ create mode 100644 node_modules/moment/src/lib/moment/constructor.js
+ create mode 100644 node_modules/moment/src/lib/moment/creation-data.js
+ create mode 100644 node_modules/moment/src/lib/moment/diff.js
+ create mode 100644 node_modules/moment/src/lib/moment/format.js
+ create mode 100644 node_modules/moment/src/lib/moment/from.js
+ create mode 100644 node_modules/moment/src/lib/moment/get-set.js
+ create mode 100644 node_modules/moment/src/lib/moment/locale.js
+ create mode 100644 node_modules/moment/src/lib/moment/min-max.js
+ create mode 100644 node_modules/moment/src/lib/moment/moment.js
+ create mode 100644 node_modules/moment/src/lib/moment/now.js
+ create mode 100644 node_modules/moment/src/lib/moment/prototype.js
+ create mode 100644 node_modules/moment/src/lib/moment/start-end-of.js
+ create mode 100644 node_modules/moment/src/lib/moment/to-type.js
+ create mode 100644 node_modules/moment/src/lib/moment/to.js
+ create mode 100644 node_modules/moment/src/lib/moment/valid.js
+ create mode 100644 node_modules/moment/src/lib/parse/regex.js
+ create mode 100644 node_modules/moment/src/lib/parse/token.js
+ create mode 100644 node_modules/moment/src/lib/units/aliases.js
+ create mode 100644 node_modules/moment/src/lib/units/constants.js
+ create mode 100644 node_modules/moment/src/lib/units/day-of-month.js
+ create mode 100644 node_modules/moment/src/lib/units/day-of-week.js
+ create mode 100644 node_modules/moment/src/lib/units/day-of-year.js
+ create mode 100644 node_modules/moment/src/lib/units/era.js
+ create mode 100644 node_modules/moment/src/lib/units/hour.js
+ create mode 100644 node_modules/moment/src/lib/units/millisecond.js
+ create mode 100644 node_modules/moment/src/lib/units/minute.js
+ create mode 100644 node_modules/moment/src/lib/units/month.js
+ create mode 100644 node_modules/moment/src/lib/units/offset.js
+ create mode 100644 node_modules/moment/src/lib/units/priorities.js
+ create mode 100644 node_modules/moment/src/lib/units/quarter.js
+ create mode 100644 node_modules/moment/src/lib/units/second.js
+ create mode 100644 node_modules/moment/src/lib/units/timestamp.js
+ create mode 100644 node_modules/moment/src/lib/units/timezone.js
+ create mode 100644 node_modules/moment/src/lib/units/units.js
+ create mode 100644 node_modules/moment/src/lib/units/week-calendar-utils.js
+ create mode 100644 node_modules/moment/src/lib/units/week-year.js
+ create mode 100644 node_modules/moment/src/lib/units/week.js
+ create mode 100644 node_modules/moment/src/lib/units/year.js
+ create mode 100644 node_modules/moment/src/lib/utils/abs-ceil.js
+ create mode 100644 node_modules/moment/src/lib/utils/abs-floor.js
+ create mode 100644 node_modules/moment/src/lib/utils/abs-round.js
+ create mode 100644 node_modules/moment/src/lib/utils/compare-arrays.js
+ create mode 100644 node_modules/moment/src/lib/utils/defaults.js
+ create mode 100644 node_modules/moment/src/lib/utils/deprecate.js
+ create mode 100644 node_modules/moment/src/lib/utils/extend.js
+ create mode 100644 node_modules/moment/src/lib/utils/has-own-prop.js
+ create mode 100644 node_modules/moment/src/lib/utils/hooks.js
+ create mode 100644 node_modules/moment/src/lib/utils/index-of.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-array.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-calendar-spec.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-date.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-function.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-leap-year.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-moment-input.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-number.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-object-empty.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-object.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-string.js
+ create mode 100644 node_modules/moment/src/lib/utils/is-undefined.js
+ create mode 100644 node_modules/moment/src/lib/utils/keys.js
+ create mode 100644 node_modules/moment/src/lib/utils/map.js
+ create mode 100644 node_modules/moment/src/lib/utils/mod.js
+ create mode 100644 node_modules/moment/src/lib/utils/some.js
+ create mode 100644 node_modules/moment/src/lib/utils/to-int.js
+ create mode 100644 node_modules/moment/src/lib/utils/zero-fill.js
+ create mode 100644 node_modules/moment/src/locale/af.js
+ create mode 100644 node_modules/moment/src/locale/ar-dz.js
+ create mode 100644 node_modules/moment/src/locale/ar-kw.js
+ create mode 100644 node_modules/moment/src/locale/ar-ly.js
+ create mode 100644 node_modules/moment/src/locale/ar-ma.js
+ create mode 100644 node_modules/moment/src/locale/ar-ps.js
+ create mode 100644 node_modules/moment/src/locale/ar-sa.js
+ create mode 100644 node_modules/moment/src/locale/ar-tn.js
+ create mode 100644 node_modules/moment/src/locale/ar.js
+ create mode 100644 node_modules/moment/src/locale/az.js
+ create mode 100644 node_modules/moment/src/locale/be.js
+ create mode 100644 node_modules/moment/src/locale/bg.js
+ create mode 100644 node_modules/moment/src/locale/bm.js
+ create mode 100644 node_modules/moment/src/locale/bn-bd.js
+ create mode 100644 node_modules/moment/src/locale/bn.js
+ create mode 100644 node_modules/moment/src/locale/bo.js
+ create mode 100644 node_modules/moment/src/locale/br.js
+ create mode 100644 node_modules/moment/src/locale/bs.js
+ create mode 100644 node_modules/moment/src/locale/ca.js
+ create mode 100644 node_modules/moment/src/locale/cs.js
+ create mode 100644 node_modules/moment/src/locale/cv.js
+ create mode 100644 node_modules/moment/src/locale/cy.js
+ create mode 100644 node_modules/moment/src/locale/da.js
+ create mode 100644 node_modules/moment/src/locale/de-at.js
+ create mode 100644 node_modules/moment/src/locale/de-ch.js
+ create mode 100644 node_modules/moment/src/locale/de.js
+ create mode 100644 node_modules/moment/src/locale/dv.js
+ create mode 100644 node_modules/moment/src/locale/el.js
+ create mode 100644 node_modules/moment/src/locale/en-au.js
+ create mode 100644 node_modules/moment/src/locale/en-ca.js
+ create mode 100644 node_modules/moment/src/locale/en-gb.js
+ create mode 100644 node_modules/moment/src/locale/en-ie.js
+ create mode 100644 node_modules/moment/src/locale/en-il.js
+ create mode 100644 node_modules/moment/src/locale/en-in.js
+ create mode 100644 node_modules/moment/src/locale/en-nz.js
+ create mode 100644 node_modules/moment/src/locale/en-sg.js
+ create mode 100644 node_modules/moment/src/locale/eo.js
+ create mode 100644 node_modules/moment/src/locale/es-do.js
+ create mode 100644 node_modules/moment/src/locale/es-mx.js
+ create mode 100644 node_modules/moment/src/locale/es-us.js
+ create mode 100644 node_modules/moment/src/locale/es.js
+ create mode 100644 node_modules/moment/src/locale/et.js
+ create mode 100644 node_modules/moment/src/locale/eu.js
+ create mode 100644 node_modules/moment/src/locale/fa.js
+ create mode 100644 node_modules/moment/src/locale/fi.js
+ create mode 100644 node_modules/moment/src/locale/fil.js
+ create mode 100644 node_modules/moment/src/locale/fo.js
+ create mode 100644 node_modules/moment/src/locale/fr-ca.js
+ create mode 100644 node_modules/moment/src/locale/fr-ch.js
+ create mode 100644 node_modules/moment/src/locale/fr.js
+ create mode 100644 node_modules/moment/src/locale/fy.js
+ create mode 100644 node_modules/moment/src/locale/ga.js
+ create mode 100644 node_modules/moment/src/locale/gd.js
+ create mode 100644 node_modules/moment/src/locale/gl.js
+ create mode 100644 node_modules/moment/src/locale/gom-deva.js
+ create mode 100644 node_modules/moment/src/locale/gom-latn.js
+ create mode 100644 node_modules/moment/src/locale/gu.js
+ create mode 100644 node_modules/moment/src/locale/he.js
+ create mode 100644 node_modules/moment/src/locale/hi.js
+ create mode 100644 node_modules/moment/src/locale/hr.js
+ create mode 100644 node_modules/moment/src/locale/hu.js
+ create mode 100644 node_modules/moment/src/locale/hy-am.js
+ create mode 100644 node_modules/moment/src/locale/id.js
+ create mode 100644 node_modules/moment/src/locale/is.js
+ create mode 100644 node_modules/moment/src/locale/it-ch.js
+ create mode 100644 node_modules/moment/src/locale/it.js
+ create mode 100644 node_modules/moment/src/locale/ja.js
+ create mode 100644 node_modules/moment/src/locale/jv.js
+ create mode 100644 node_modules/moment/src/locale/ka.js
+ create mode 100644 node_modules/moment/src/locale/kk.js
+ create mode 100644 node_modules/moment/src/locale/km.js
+ create mode 100644 node_modules/moment/src/locale/kn.js
+ create mode 100644 node_modules/moment/src/locale/ko.js
+ create mode 100644 node_modules/moment/src/locale/ku-kmr.js
+ create mode 100644 node_modules/moment/src/locale/ku.js
+ create mode 100644 node_modules/moment/src/locale/ky.js
+ create mode 100644 node_modules/moment/src/locale/lb.js
+ create mode 100644 node_modules/moment/src/locale/lo.js
+ create mode 100644 node_modules/moment/src/locale/lt.js
+ create mode 100644 node_modules/moment/src/locale/lv.js
+ create mode 100644 node_modules/moment/src/locale/me.js
+ create mode 100644 node_modules/moment/src/locale/mi.js
+ create mode 100644 node_modules/moment/src/locale/mk.js
+ create mode 100644 node_modules/moment/src/locale/ml.js
+ create mode 100644 node_modules/moment/src/locale/mn.js
+ create mode 100644 node_modules/moment/src/locale/mr.js
+ create mode 100644 node_modules/moment/src/locale/ms-my.js
+ create mode 100644 node_modules/moment/src/locale/ms.js
+ create mode 100644 node_modules/moment/src/locale/mt.js
+ create mode 100644 node_modules/moment/src/locale/my.js
+ create mode 100644 node_modules/moment/src/locale/nb.js
+ create mode 100644 node_modules/moment/src/locale/ne.js
+ create mode 100644 node_modules/moment/src/locale/nl-be.js
+ create mode 100644 node_modules/moment/src/locale/nl.js
+ create mode 100644 node_modules/moment/src/locale/nn.js
+ create mode 100644 node_modules/moment/src/locale/oc-lnc.js
+ create mode 100644 node_modules/moment/src/locale/pa-in.js
+ create mode 100644 node_modules/moment/src/locale/pl.js
+ create mode 100644 node_modules/moment/src/locale/pt-br.js
+ create mode 100644 node_modules/moment/src/locale/pt.js
+ create mode 100644 node_modules/moment/src/locale/ro.js
+ create mode 100644 node_modules/moment/src/locale/ru.js
+ create mode 100644 node_modules/moment/src/locale/sd.js
+ create mode 100644 node_modules/moment/src/locale/se.js
+ create mode 100644 node_modules/moment/src/locale/si.js
+ create mode 100644 node_modules/moment/src/locale/sk.js
+ create mode 100644 node_modules/moment/src/locale/sl.js
+ create mode 100644 node_modules/moment/src/locale/sq.js
+ create mode 100644 node_modules/moment/src/locale/sr-cyrl.js
+ create mode 100644 node_modules/moment/src/locale/sr.js
+ create mode 100644 node_modules/moment/src/locale/ss.js
+ create mode 100644 node_modules/moment/src/locale/sv.js
+ create mode 100644 node_modules/moment/src/locale/sw.js
+ create mode 100644 node_modules/moment/src/locale/ta.js
+ create mode 100644 node_modules/moment/src/locale/te.js
+ create mode 100644 node_modules/moment/src/locale/tet.js
+ create mode 100644 node_modules/moment/src/locale/tg.js
+ create mode 100644 node_modules/moment/src/locale/th.js
+ create mode 100644 node_modules/moment/src/locale/tk.js
+ create mode 100644 node_modules/moment/src/locale/tl-ph.js
+ create mode 100644 node_modules/moment/src/locale/tlh.js
+ create mode 100644 node_modules/moment/src/locale/tr.js
+ create mode 100644 node_modules/moment/src/locale/tzl.js
+ create mode 100644 node_modules/moment/src/locale/tzm-latn.js
+ create mode 100644 node_modules/moment/src/locale/tzm.js
+ create mode 100644 node_modules/moment/src/locale/ug-cn.js
+ create mode 100644 node_modules/moment/src/locale/uk.js
+ create mode 100644 node_modules/moment/src/locale/ur.js
+ create mode 100644 node_modules/moment/src/locale/uz-latn.js
+ create mode 100644 node_modules/moment/src/locale/uz.js
+ create mode 100644 node_modules/moment/src/locale/vi.js
+ create mode 100644 node_modules/moment/src/locale/x-pseudo.js
+ create mode 100644 node_modules/moment/src/locale/yo.js
+ create mode 100644 node_modules/moment/src/locale/zh-cn.js
+ create mode 100644 node_modules/moment/src/locale/zh-hk.js
+ create mode 100644 node_modules/moment/src/locale/zh-mo.js
+ create mode 100644 node_modules/moment/src/locale/zh-tw.js
+ create mode 100644 node_modules/moment/src/moment.js
+ create mode 100644 node_modules/moment/ts3.1-typings/moment.d.ts
+ create mode 100644 node_modules/ms/index.js
+ create mode 100644 node_modules/ms/license.md
+ create mode 100644 node_modules/ms/package.json
+ create mode 100644 node_modules/ms/readme.md
+ create mode 100644 node_modules/proxy-from-env/.eslintrc
+ create mode 100644 node_modules/proxy-from-env/.travis.yml
+ create mode 100644 node_modules/proxy-from-env/LICENSE
+ create mode 100644 node_modules/proxy-from-env/README.md
+ create mode 100644 node_modules/proxy-from-env/index.js
+ create mode 100644 node_modules/proxy-from-env/package.json
+ create mode 100644 node_modules/proxy-from-env/test.js
+ create mode 100644 node_modules/simple-git/dist/cjs/index.js
+ create mode 100644 node_modules/simple-git/dist/cjs/index.js.map
+ create mode 100644 node_modules/simple-git/dist/esm/index.js
+ create mode 100644 node_modules/simple-git/dist/esm/index.js.map
+ create mode 100644 node_modules/simple-git/dist/esm/package.json
+ create mode 100644 node_modules/simple-git/dist/src/lib/api.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/args/log-format.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/args/pathspec.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/errors/git-construct-error.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/errors/git-error.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/errors/git-plugin-error.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/errors/git-response-error.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/errors/task-configuration-error.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/git-factory.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/git-logger.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-branch-delete.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-branch.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-commit.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-diff-summary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-fetch.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-list-log-summary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-merge.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-move.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-pull.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-push.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-remote-messages.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/parsers/parse-remote-objects.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/abort-plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/block-unsafe-operations-plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/command-config-prefixing-plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/completion-detection.plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/custom-binary.plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/error-detection.plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/index.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/plugin-store.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/progress-monitor-plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/simple-git-plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/spawn-options-plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/suffix-paths.plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/plugins/timout-plugin.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/BranchDeleteSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/BranchSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/CheckIgnore.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/CleanSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/ConfigList.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/DiffSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/FileStatusSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/GetRemoteSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/InitSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/MergeSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/PullSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/StatusSummary.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/responses/TagList.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/runners/git-executor-chain.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/runners/git-executor.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/runners/promise-wrapped.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/runners/scheduler.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/runners/tasks-pending-queue.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/simple-git-api.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/task-callback.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/apply-patch.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/branch.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/change-working-directory.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/check-ignore.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/check-is-repo.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/checkout.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/clean.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/clone.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/commit.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/config.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/count-objects.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/diff-name-status.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/diff.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/fetch.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/first-commit.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/grep.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/hash-object.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/init.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/log.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/merge.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/move.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/pull.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/push.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/remote.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/reset.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/show.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/stash-list.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/status.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/sub-module.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/tag.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/task.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/tasks/version.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/types/handlers.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/types/index.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/types/tasks.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/utils/argument-filters.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/utils/exit-codes.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/utils/git-output-streams.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/utils/index.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/utils/line-parser.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/utils/simple-git-options.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/utils/task-options.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/utils/task-parser.d.ts
+ create mode 100644 node_modules/simple-git/dist/src/lib/utils/util.d.ts
+ create mode 100644 node_modules/simple-git/dist/typings/errors.d.ts
+ create mode 100644 node_modules/simple-git/dist/typings/index.d.ts
+ create mode 100644 node_modules/simple-git/dist/typings/response.d.ts
+ create mode 100644 node_modules/simple-git/dist/typings/simple-git.d.ts
+ create mode 100644 node_modules/simple-git/dist/typings/types.d.ts
+ create mode 100644 node_modules/simple-git/package.json
+ create mode 100644 node_modules/simple-git/promise.js
+ create mode 100644 node_modules/simple-git/readme.md
+ create mode 100644 node_modules/typescript/LICENSE.txt
+ create mode 100644 node_modules/typescript/README.md
+ create mode 100644 node_modules/typescript/SECURITY.md
+ create mode 100644 node_modules/typescript/ThirdPartyNoticeText.txt
+ create mode 100755 node_modules/typescript/bin/tsc
+ create mode 100755 node_modules/typescript/bin/tsserver
+ create mode 100644 node_modules/typescript/lib/README.md
+ create mode 100644 node_modules/typescript/lib/cancellationToken.js
+ create mode 100644 node_modules/typescript/lib/cs/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/de/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/dynamicImportCompat.js
+ create mode 100644 node_modules/typescript/lib/es/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/fr/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/it/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/ja/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/ko/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/lib.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.dom.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.dom.iterable.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.collection.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.core.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.generator.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.iterable.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.promise.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.proxy.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.reflect.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.symbol.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2016.array.include.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2016.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2016.full.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2017.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2017.full.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2017.intl.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2017.object.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2017.string.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2017.typedarrays.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2018.asynciterable.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2018.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2018.full.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2018.intl.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2018.promise.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2018.regexp.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2019.array.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2019.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2019.full.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2019.intl.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2019.object.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2019.string.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2019.symbol.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.bigint.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.date.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.full.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.intl.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.number.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.promise.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.sharedmemory.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.string.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2021.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2021.full.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2021.intl.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2021.promise.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2021.string.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2021.weakref.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2022.array.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2022.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2022.error.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2022.full.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2022.intl.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2022.object.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2022.sharedmemory.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es2022.string.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es5.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.es6.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.esnext.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.esnext.full.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.esnext.intl.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.esnext.promise.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.esnext.string.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.esnext.weakref.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.scripthost.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.webworker.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.webworker.importscripts.d.ts
+ create mode 100644 node_modules/typescript/lib/lib.webworker.iterable.d.ts
+ create mode 100644 node_modules/typescript/lib/pl/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/protocol.d.ts
+ create mode 100644 node_modules/typescript/lib/pt-br/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/ru/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/tr/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/tsc.js
+ create mode 100644 node_modules/typescript/lib/tsserver.js
+ create mode 100644 node_modules/typescript/lib/tsserverlibrary.d.ts
+ create mode 100644 node_modules/typescript/lib/tsserverlibrary.js
+ create mode 100644 node_modules/typescript/lib/typesMap.json
+ create mode 100644 node_modules/typescript/lib/typescript.d.ts
+ create mode 100644 node_modules/typescript/lib/typescript.js
+ create mode 100644 node_modules/typescript/lib/typescriptServices.d.ts
+ create mode 100644 node_modules/typescript/lib/typescriptServices.js
+ create mode 100644 node_modules/typescript/lib/typingsInstaller.js
+ create mode 100644 node_modules/typescript/lib/watchGuard.js
+ create mode 100644 node_modules/typescript/lib/zh-cn/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/lib/zh-tw/diagnosticMessages.generated.json
+ create mode 100644 node_modules/typescript/package.json
+ create mode 100644 out/changelogGenerator.js
+ create mode 100644 out/changelogGenerator.js.map
+ create mode 100644 out/extension.js
+ create mode 100644 out/extension.js.map
+ create mode 100644 out/gitService.js
+ create mode 100644 out/gitService.js.map
+ create mode 100644 out/issueService.js
+ create mode 100644 out/issueService.js.map
+ create mode 100644 package-lock.json
+ create mode 100644 package.json
+ create mode 100644 src/changelogGenerator.ts
+ create mode 100644 src/extension.ts
+ create mode 100644 src/gitService.ts
+ create mode 100644 src/issueService.ts
+ create mode 100644 test-plugin.md
+ create mode 100644 tsconfig.json
+
+```
+
+---
+
+
+
+---
+
+_**User**_
+
+请继续。这个代码准备开源使用，github仓库：git@github.com:yixinshark/auto-create-Debian-Chanagelog.git
+
+---
+
+_**Assistant**_
+
+
 
 ---
 
