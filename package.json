@@ -1,8 +1,10 @@
 {
-  "name": "debian-smart-changelog",
-  "displayName": "Debian Smart Changelog",
-  "description": "智能生成Debian包的changelog，支持Git提交信息和Issue跟踪系统集成，提高Debian包开发效率",
+  "name": "smart-debian-changelog",
+  "displayName": "Smart Debian Changelog",
+  "description": "Intelligent Debian changelog generator with Git integration and Issue tracking support | 智能Debian变更日志生成器，支持Git集成和Issue跟踪",
+  "publisher": "yixinshark",
   "version": "1.0.0",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.74.0"
   },

@@ -1,60 +1,180 @@
-# 🚀 Debian Smart Changelog
+# 🚀 Smart Debian Changelog
 
 [![Build Status](https://github.com/yixinshark/auto-create-Debian-Chanagelog/workflows/Build%20and%20Test/badge.svg)](https://github.com/yixinshark/auto-create-Debian-Chanagelog/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![VSCode Marketplace](https://img.shields.io/badge/vscode-marketplace-blue.svg)](https://marketplace.visualstudio.com/items?itemName=debian-smart-changelog)
+[![VSCode Marketplace](https://img.shields.io/badge/vscode-marketplace-blue.svg)](https://marketplace.visualstudio.com/items?itemName=yixinshark.smart-debian-changelog)
 
-一个智能的VSCode插件，专为Debian包开发者设计，能够自动生成高质量的changelog条目。告别手动编写changelog的时代！
+*[English](#english) | [中文](#中文)*
 
-![功能演示](https://via.placeholder.com/800x400/0066cc/ffffff?text=Debian+Smart+Changelog+Demo)
+---
 
-## ✨ 主要功能
+## English
 
-### 🚀 智能内容生成
+A powerful VSCode extension designed for Debian package developers to intelligently generate high-quality changelog entries. Say goodbye to manual changelog writing!
+
+![Smart Debian Changelog Demo](https://via.placeholder.com/800x400/0066cc/ffffff?text=Smart+Debian+Changelog+Demo)
+
+### ✨ Key Features
+
+#### 🚀 Intelligent Content Generation
+- **Git Integration**: Automatically extract changes from Git commit history
+- **Issue Tracking**: Support for GitHub/GitLab Issue system integration
+- **Smart Analysis**: Automatically determine urgency levels based on commit content
+- **File Awareness**: Identify important file changes and add them to changelog
+
+#### 📝 Complete Debian Format Support
+- **Standard Format**: Strictly follows Debian changelog format specifications
+- **Version Management**: Smart version number incrementing
+- **Date Formatting**: Automatically generates RFC 2822 formatted dates
+- **Author Information**: Automatic configuration and use of author details
+
+#### 🛠️ User-Friendly Interface
+- **Keyboard Shortcuts**: Support for custom keyboard shortcuts
+- **Command Palette**: Integrated into VSCode command palette
+- **Rich Configuration**: Extensive configuration options for different needs
+
+### 📦 Installation
+
+#### From VSCode Marketplace
+1. Open VSCode
+2. Press `Ctrl+P` to open Quick Open
+3. Type `ext install yixinshark.smart-debian-changelog`
+4. Restart VSCode
+
+#### Manual Installation
+1. Download the latest `.vsix` file from [Releases](https://github.com/yixinshark/auto-create-Debian-Chanagelog/releases)
+2. Open VSCode
+3. Press `Ctrl+Shift+P` and run `Extensions: Install from VSIX...`
+4. Select the downloaded file
+
+### 🚀 Quick Start
+
+#### 1. Configure User Information
+First time users should configure their name and email:
+```
+Ctrl+Shift+P -> "Debian: Configure User Information"
+```
+
+#### 2. Generate Basic Changelog Entry
+In your `debian/changelog` file, use the shortcut:
+```
+Ctrl+Alt+D
+```
+
+#### 3. Generate Smart Changelog from Git
+```
+Ctrl+Alt+G
+```
+
+### ⚙️ Configuration Options
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| `debianChangelog.author.name` | Author name | "" |
+| `debianChangelog.author.email` | Author email | "" |
+| `debianChangelog.defaultDistribution` | Default distribution | "unstable" |
+| `debianChangelog.defaultUrgency` | Default urgency level | "medium" |
+| `debianChangelog.gitCommitRange` | Git commit range | "HEAD~10..HEAD" |
+| `debianChangelog.includeIssueDetails` | Include Issue details | true |
+| `debianChangelog.github.token` | GitHub access token | "" |
+| `debianChangelog.gitlab.token` | GitLab access token | "" |
+
+### 🔗 Issue Tracking System Integration
+
+Configure API tokens to enable automatic Issue details retrieval:
+
+#### GitHub Configuration
+1. Visit [GitHub Token Settings](https://github.com/settings/tokens)
+2. Generate a new personal access token
+3. For public repos: no special permissions needed
+4. For private repos: `repo` permission required
+5. Configure in VSCode settings: `debianChangelog.github.token`
+
+#### GitLab Configuration
+1. Visit [GitLab Token Settings](https://gitlab.com/-/profile/personal_access_tokens)
+2. Create a new personal access token
+3. Required permission: `read_api`
+4. Configure in VSCode settings: `debianChangelog.gitlab.token`
+
+### 📋 Commands
+
+| Command | Shortcut | Description |
+|---------|----------|-------------|
+| `debian-changelog.generate` | `Ctrl+Alt+D` | Generate basic changelog entry |
+| `debian-changelog.generateFromGit` | `Ctrl+Alt+G` | Generate changelog from Git commits |
+| `debian-changelog.configure` | - | Configure user information |
+
+### 🎯 Comparison with Existing Solutions
+
+| Feature | Existing Plugins | **Smart Debian Changelog** | Advantage |
+|---------|------------------|---------------------------|-----------|
+| Basic template | ✅ | ✅ | Same |
+| Git integration | ❌ | ✅ | **Full automation** |
+| Issue tracking | ❌ | ✅ | **Smart context** |
+| Smart analysis | ❌ | ✅ | **Auto detection** |
+| Version management | ❌ | ✅ | **Auto increment** |
+| File change awareness | ❌ | ✅ | **Detailed tracking** |
+| Multi-platform support | ❌ | ✅ | **GitHub/GitLab** |
+
+---
+
+## 中文
+
+一个强大的VSCode插件，专为Debian包开发者设计，能够智能生成高质量的changelog条目。告别手动编写changelog的时代！
+
+### ✨ 主要功能
+
+#### 🚀 智能内容生成
 - **Git集成**: 自动从Git提交历史提取变更信息
 - **Issue跟踪**: 支持GitHub/GitLab Issue系统集成
 - **智能分析**: 根据提交内容自动判断紧急程度
 - **文件感知**: 识别重要文件变更并添加到changelog
 
-### 📝 完整的Debian格式支持
+#### 📝 完整的Debian格式支持
 - **标准格式**: 严格遵循Debian changelog格式规范
 - **版本管理**: 智能版本号递增
 - **日期格式**: 自动生成RFC 2822格式的日期
 - **作者信息**: 自动配置和使用作者信息
 
-### 🛠️ 用户友好的界面
+#### 🛠️ 用户友好的界面
 - **快捷键**: 支持自定义快捷键操作
 - **命令面板**: 集成到VSCode命令面板
-- **配置选项**: 丰富的配置选项满足不同需求
+- **丰富配置**: 多样的配置选项满足不同需求
 
-## 📦 安装
+### 📦 安装方法
 
+#### 从VSCode市场安装
 1. 打开VSCode
 2. 按 `Ctrl+P` 打开Quick Open
-3. 输入 `ext install debian-smart-changelog`
+3. 输入 `ext install yixinshark.smart-debian-changelog`
 4. 重启VSCode
 
-## 🚀 快速开始
+#### 手动安装
+1. 从[发布页面](https://github.com/yixinshark/auto-create-Debian-Chanagelog/releases)下载最新的`.vsix`文件
+2. 打开VSCode
+3. 按 `Ctrl+Shift+P` 运行 `Extensions: Install from VSIX...`
+4. 选择下载的文件
 
-### 1. 配置用户信息
+### 🚀 快速开始
+
+#### 1. 配置用户信息
 第一次使用时，请配置您的姓名和邮箱：
-
 ```
 Ctrl+Shift+P -> "Debian: 配置用户信息"
 ```
 
-### 2. 生成基本changelog条目
+#### 2. 生成基本changelog条目
 在debian/changelog文件中，按快捷键：
 ```
 Ctrl+Alt+D
 ```
 
-### 3. 从Git提交生成智能changelog
+#### 3. 从Git提交生成智能changelog
 ```
 Ctrl+Alt+G
 ```
 
-## ⚙️ 配置选项
+### ⚙️ 配置选项
 
 | 配置项 | 说明 | 默认值 |
 |--------|------|--------|
@@ -67,149 +187,78 @@ Ctrl+Alt+G
 | `debianChangelog.github.token` | GitHub访问令牌 | "" |
 | `debianChangelog.gitlab.token` | GitLab访问令牌 | "" |
 
-## 🔗 Issue跟踪系统集成
+### 🔗 Issue跟踪系统集成
 
-### 什么是Issue跟踪系统集成？
-
-Issue跟踪系统是管理项目任务、bug报告、功能需求的平台（如GitHub Issues、GitLab Issues）。
-
-插件会：
-1. **自动识别**提交消息中的Issue引用（如 #123, fixes #456）
-2. **获取详情**通过API获取Issue的标题、类型、状态等信息
-3. **智能生成**更有意义的changelog条目
-
-### 配置API访问
+配置API访问令牌以启用Issue详情自动获取功能：
 
 #### GitHub配置
 1. 访问 [GitHub Token Settings](https://github.com/settings/tokens)
-2. 点击 "Generate new token"
-3. 选择权限：
-   - 公开仓库：无需特殊权限
-   - 私有仓库：需要 `repo` 权限
-4. 在VSCode设置中配置：`debianChangelog.github.token`
+2. 生成新的个人访问令牌
+3. 公开仓库：无需特殊权限
+4. 私有仓库：需要 `repo` 权限
+5. 在VSCode设置中配置：`debianChangelog.github.token`
 
 #### GitLab配置
 1. 访问 [GitLab Token Settings](https://gitlab.com/-/profile/personal_access_tokens)
 2. 创建新的个人访问令牌
-3. 选择权限：`read_api`
+3. 所需权限：`read_api`
 4. 在VSCode设置中配置：`debianChangelog.gitlab.token`
 
-### 示例效果
+### 📋 命令列表
 
-**提交消息：**
+| 命令 | 快捷键 | 说明 |
+|------|--------|------|
+| `debian-changelog.generate` | `Ctrl+Alt+D` | 生成基本changelog条目 |
+| `debian-changelog.generateFromGit` | `Ctrl+Alt+G` | 从Git提交生成changelog |
+| `debian-changelog.configure` | - | 配置用户信息 |
+
+---
+
+## 🤝 Contributing | 贡献
+
+We welcome all forms of contributions! | 我们欢迎所有形式的贡献！
+
+### How to Contribute | 如何贡献
+1. Fork this repository | Fork 这个仓库
+2. Create your feature branch | 创建您的功能分支 (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes | 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch | 推送到分支 (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request | 打开一个 Pull Request
+
+### Development Setup | 开发环境设置
 ```bash
-git commit -m "Fix memory leak in audio module (fixes #123)"
-git commit -m "Add dark theme support (closes #456)"
-```
-
-**生成的changelog：**
-```
-dde-shell (2.0.4) unstable; urgency=medium
-
-  * Fix memory leak in audio module when switching profiles (#123)
-  * Add dark theme support for better user experience (#456)
-  * Update dependencies to latest stable versions
-
- -- Your Name <your@email.com>  Thu, 31 Jul 2025 21:04:39 +0800
-```
-
-## 📋 使用场景
-
-### 1. 日常开发
-每次发布新版本时，快速生成标准格式的changelog：
-```
-Ctrl+Alt+D  # 生成基本条目
-```
-
-### 2. 版本发布
-基于Git提交历史自动生成完整的变更记录：
-```
-Ctrl+Alt+G  # 从Git生成智能changelog
-```
-
-### 3. 团队协作
-结合Issue跟踪系统，生成包含完整上下文的changelog：
-- 自动获取Issue标题和类型
-- 智能判断变更的重要性
-- 生成规范化的描述
-
-## 🔧 高级功能
-
-### 版本号智能递增
-插件会自动：
-1. 读取当前changelog中的最新版本
-2. 根据变更类型建议新版本号
-3. 支持手动调整版本号
-
-### 紧急程度自动判断
-根据提交内容自动设置urgency：
-- `high`: 包含安全修复或CVE相关
-- `medium`: 包含bug修复
-- `low`: 功能增强或文档更新
-
-### 文件变更感知
-自动识别重要文件变更：
-- 动态库 (.so)
-- 配置文件 (.conf, .json, .xml)
-- 系统服务 (.service)
-- 桌面文件 (.desktop)
-
-## 🤝 贡献
-
-欢迎提交Issue和Pull Request！
-
-## 📄 许可证
-
-MIT License
-
-## 🤝 贡献指南
-
-我们欢迎所有形式的贡献！
-
-### 如何贡献
-1. Fork 这个仓库
-2. 创建您的功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开一个 Pull Request
-
-### 开发环境设置
-```bash
-# 克隆仓库
+# Clone the repository | 克隆仓库
 git clone https://github.com/yixinshark/auto-create-Debian-Chanagelog.git
 cd auto-create-Debian-Chanagelog
 
-# 安装依赖
+# Install dependencies | 安装依赖
 npm install
 
-# 编译项目
+# Compile the project | 编译项目
 npm run compile
 
-# 在VSCode中调试
-# 按F5启动调试模式
+# Debug in VSCode | 在VSCode中调试
+# Press F5 to start debugging mode | 按F5启动调试模式
 ```
 
-### 报告问题
+### Report Issues | 报告问题
+If you find a bug or have a feature request, please [create an issue](https://github.com/yixinshark/auto-create-Debian-Chanagelog/issues).
+
 如果您发现了bug或有功能建议，请[创建一个issue](https://github.com/yixinshark/auto-create-Debian-Chanagelog/issues)。
 
-## 🙋‍♂️ 支持
+## 📄 License | 许可证
 
-如果您遇到问题或有建议，请：
-1. 查看文档和配置选项
-2. 在GitHub提交Issue
-3. 参与讨论和改进
-
-## 📄 许可证
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
-## 🙏 致谢
+## 🙏 Acknowledgments | 致谢
 
-- 感谢所有为Debian生态系统做出贡献的开发者
-- 感谢VSCode扩展开发社区的支持
-- 感谢所有测试用户的反馈
+- Thanks to all developers contributing to the Debian ecosystem | 感谢所有为Debian生态系统做出贡献的开发者
+- Thanks to the VSCode extension development community | 感谢VSCode扩展开发社区的支持
+- Thanks to all testers for their feedback | 感谢所有测试用户的反馈
 
-## 📊 统计
+## 📊 Statistics | 统计
 
 ![GitHub stars](https://img.shields.io/github/stars/yixinshark/auto-create-Debian-Chanagelog?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/yixinshark/auto-create-Debian-Chanagelog?style=social)
@@ -217,6 +266,6 @@ npm run compile
 
 ---
 
-🎉 **让Debian包的changelog管理变得简单高效！** 🎉
+🎉 **Make Debian changelog management simple and efficient!** | **让Debian包的changelog管理变得简单高效！** 🎉
 
-**⭐ 如果这个项目对您有帮助，请给我们一个Star！**
+**⭐ If this project helps you, please give us a Star!** | **⭐ 如果这个项目对您有帮助，请给我们一个Star！**
