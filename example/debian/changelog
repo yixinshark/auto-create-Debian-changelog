@@ -1,0 +1,24 @@
+dde-shell (2.0.3) unstable; urgency=medium
+
+  * Fix desktop wallpaper not loading on startup
+  * Improve performance in multi-monitor setup
+  * Update Chinese translations
+  * Add support for custom panel height
+
+ -- Deepin Packages Builder <packages@deepin.org>  Wed, 15 Jul 2025 14:32:18 +0800
+
+dde-shell (2.0.2) unstable; urgency=high
+
+  * Security fix: prevent code injection in plugin loader
+  * Fix memory leak in notification system
+  * Improve stability of dock panel
+
+ -- Deepin Packages Builder <packages@deepin.org>  Mon, 01 Jul 2025 09:15:42 +0800
+
+dde-shell (2.0.1) unstable; urgency=medium
+
+  * Initial release for Debian unstable
+  * Add basic desktop shell functionality
+  * Support for multiple panels and applets
+
+ -- Deepin Packages Builder <packages@deepin.org>  Fri, 15 Jun 2025 16:20:30 +0800

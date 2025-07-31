@@ -1,0 +1,133 @@
+{
+  "name": "debian-smart-changelog",
+  "displayName": "Debian Smart Changelog",
+  "description": "智能生成Debian包的changelog，支持Git提交信息和Issue跟踪系统集成",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other",
+    "Snippets"
+  ],
+  "keywords": [
+    "debian",
+    "changelog",
+    "git",
+    "package",
+    "dch"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/debian-smart-changelog"
+  },
+  "license": "MIT",
+  "activationEvents": [
+    "onLanguage:debian-changelog",
+    "onCommand:debian-changelog.generate",
+    "onCommand:debian-changelog.generateFromGit"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "debian-changelog.generate",
+        "title": "生成Debian Changelog条目",
+        "category": "Debian"
+      },
+      {
+        "command": "debian-changelog.generateFromGit",
+        "title": "从Git提交生成Changelog",
+        "category": "Debian"
+      },
+      {
+        "command": "debian-changelog.configure",
+        "title": "配置用户信息",
+        "category": "Debian"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "debian-changelog.generate",
+        "key": "ctrl+alt+d",
+        "mac": "cmd+alt+d",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "debian-changelog.generateFromGit",
+        "key": "ctrl+alt+g",
+        "mac": "cmd+alt+g",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "Debian Smart Changelog",
+      "properties": {
+        "debianChangelog.author.name": {
+          "type": "string",
+          "default": "",
+          "description": "作者姓名"
+        },
+        "debianChangelog.author.email": {
+          "type": "string",
+          "default": "",
+          "description": "作者邮箱"
+        },
+        "debianChangelog.defaultDistribution": {
+          "type": "string",
+          "default": "unstable",
+          "description": "默认发行版"
+        },
+        "debianChangelog.defaultUrgency": {
+          "type": "string",
+          "default": "medium",
+          "enum": ["low", "medium", "high", "emergency"],
+          "description": "默认紧急程度"
+        },
+        "debianChangelog.gitCommitRange": {
+          "type": "string",
+          "default": "HEAD~10..HEAD",
+          "description": "Git提交范围（例如：HEAD~10..HEAD 或 v1.0.0..HEAD）"
+        },
+        "debianChangelog.github.token": {
+          "type": "string",
+          "default": "",
+          "description": "GitHub访问令牌（用于获取Issue信息）"
+        },
+        "debianChangelog.gitlab.token": {
+          "type": "string",
+          "default": "",
+          "description": "GitLab访问令牌（用于获取Issue信息）"
+        },
+        "debianChangelog.includeIssueDetails": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否包含Issue详细信息"
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "debian-changelog",
+        "aliases": ["Debian Changelog", "changelog"],
+        "filenames": ["changelog"],
+        "filenamePatterns": ["**/debian/changelog"]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "simple-git": "^3.19.1",
+    "axios": "^1.4.0",
+    "moment": "^2.29.4"
+  }
+}

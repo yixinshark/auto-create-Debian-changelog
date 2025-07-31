@@ -1,0 +1,26 @@
+Source: dde-shell
+Section: x11
+Priority: optional
+Maintainer: Deepin Packages Builder <packages@deepin.org>
+Build-Depends:
+ debhelper-compat (= 13),
+ cmake,
+ qt6-base-dev,
+ qt6-declarative-dev,
+Standards-Version: 4.6.0
+Homepage: https://github.com/linuxdeepin/dde-shell
+
+Package: dde-shell
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ qt6-qml-module-qtquick-controls,
+ qt6-qml-module-qtquick-layouts,
+Description: Desktop Environment Shell for Deepin
+ DDE Shell is a desktop environment shell that provides
+ modern and intuitive user interface components for
+ the Deepin Desktop Environment.
+ .
+ This package contains the main shell application and
+ core components.
