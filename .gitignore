@@ -35,3 +35,6 @@ npm-debug.log*
 .env
 .env.local
 .env.*.local
+
+# SpecStory聊天历史文件（保留配置和说明文档）
+.specstory/history/
