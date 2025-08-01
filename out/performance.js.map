@@ -1,1 +1,0 @@
-{"version":3,"file":"performance.js","sourceRoot":"","sources":["../src/performance.ts"],"names":[],"mappings":";;;AAAA,WAAW;AACX,MAAa,oBAAoB;IACtB,eAAe;QAClB,SAAS;QACT,IAAI,CAAC,sBAAsB,EAAE,CAAC;QAC9B,IAAI,CAAC,kBAAkB,EAAE,CAAC;IAC9B,CAAC;IAEO,sBAAsB;QAC1B,UAAU;IACd,CAAC;IAEO,kBAAkB;QACtB,SAAS;IACb,CAAC;CACJ;AAdD,oDAcC"}
