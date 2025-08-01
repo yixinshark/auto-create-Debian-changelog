@@ -8,3 +8,24 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.map
 **/*.ts
+
+# SpecStory文件
+.specstory/**
+
+# 开发文档（保留核心文档）
+CREATE_GITHUB_RELEASE.md
+MIGRATION_COMPLETE.md
+PROJECT_SUMMARY.md
+INSTALL.md
+RELEASE.md
+RELEASE_NOTES_v1.0.0.md
+USAGE.md
+
+# GitHub Actions
+.github/**
+
+# 示例文件
+example/**
+
+# 编辑器配置
+.cursorindexingignore
